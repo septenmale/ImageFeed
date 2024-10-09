@@ -4,7 +4,7 @@ class ImagesListViewController: UIViewController {
     
     @IBOutlet private var tableView: UITableView!
     
-    private let photosName: [String] = Array(0..<20).map{ "\($0)" }
+    private let photosName = Array(0..<20).map{ "\($0)" }
     
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -15,7 +15,6 @@ class ImagesListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         tableView.rowHeight = 200
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
