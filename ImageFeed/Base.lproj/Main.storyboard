@@ -133,6 +133,9 @@
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="Exit"/>
+                                <connections>
+                                    <action selector="didTapLogoutButtom:" destination="ygn-Ku-hJM" eventType="touchUpInside" id="KKr-hY-Sd0"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello, World!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qD5-Jc-6Jr" userLabel="Description Label">
                                 <rect key="frame" x="16" y="228.33333333333334" width="361" height="15.666666666666657"/>
@@ -159,6 +162,13 @@
                             <constraint firstItem="sw9-aV-oO7" firstAttribute="trailing" secondItem="Fq5-Wd-Qoa" secondAttribute="trailing" id="lbr-fg-KE3"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="avatarImageView" destination="VMI-OB-q4S" id="N5e-f9-Vlo"/>
+                        <outlet property="descriptionLabel" destination="qD5-Jc-6Jr" id="wP3-E2-rTX"/>
+                        <outlet property="loginNameLabel" destination="sw9-aV-oO7" id="Gf4-kU-QIZ"/>
+                        <outlet property="logoutButton" destination="Gi5-B1-Y2Q" id="t5T-yj-ZvV"/>
+                        <outlet property="nameLabel" destination="Fq5-Wd-Qoa" id="h7y-m4-6Ey"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pk6-mF-3DQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
