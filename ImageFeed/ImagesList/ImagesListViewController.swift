@@ -1,6 +1,7 @@
 import UIKit
 
 final class ImagesListViewController: UIViewController {
+    private let showSingleImageSegueIdentifier = "ShowSingleImage"
     
     @IBOutlet private var tableView: UITableView!
     
@@ -22,7 +23,7 @@ final class ImagesListViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        if segue.identifier == "ShowSingleImage" {
+        if segue.identifier == showSingleImageSegueIdentifier {
             guard
                 let viewController = segue.destination as? SingleImageViewController,
                 let indexPath = sender as? IndexPath
@@ -32,7 +33,7 @@ final class ImagesListViewController: UIViewController {
             }
             
             let image = UIImage(named: photosName[indexPath.row])
-            viewController.imageView.image = image
+            viewController.image = image
         } else {
             super.prepare(for: segue, sender: sender)
         }
@@ -60,7 +61,7 @@ extension ImagesListViewController {
 extension ImagesListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-           performSegue(withIdentifier: "ShowSingleImage", sender: indexPath)
+        performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
        }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
