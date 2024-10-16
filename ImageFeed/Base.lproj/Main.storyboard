@@ -231,18 +231,32 @@
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="Backward"/>
                                 <connections>
-                                    <action selector="didTapBackButton:" destination="TCd-7D-Dbn" eventType="touchUpInside" id="qA1-Ad-QGg"/>
+                                    <action selector="didTapBackButton" destination="TCd-7D-Dbn" eventType="touchUpInside" id="woU-D5-x1u"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bKx-UY-IEt" userLabel="download button">
+                                <rect key="frame" x="171.66666666666666" y="785" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="Lyb-Ga-7Br"/>
+                                    <constraint firstAttribute="width" secondItem="bKx-UY-IEt" secondAttribute="height" multiplier="1:1" id="pbx-QC-yox"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="Sharing"/>
+                                <connections>
+                                    <action selector="didTapShareButton" destination="TCd-7D-Dbn" eventType="touchUpInside" id="gR1-4a-F1w"/>
                                 </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="o74-p3-wyS"/>
                         <color key="backgroundColor" name="YP Black (iOS)"/>
                         <constraints>
+                            <constraint firstItem="bKx-UY-IEt" firstAttribute="centerX" secondItem="o74-p3-wyS" secondAttribute="centerX" id="F76-qo-4iX"/>
                             <constraint firstItem="a8L-ab-dHg" firstAttribute="leading" secondItem="o74-p3-wyS" secondAttribute="leading" constant="-20" id="HoH-er-6WY"/>
                             <constraint firstItem="a8L-ab-dHg" firstAttribute="top" secondItem="o74-p3-wyS" secondAttribute="top" constant="-20" id="KyS-dh-Qmb"/>
                             <constraint firstItem="o74-p3-wyS" firstAttribute="trailing" secondItem="a8L-ab-dHg" secondAttribute="trailing" constant="-20" id="ioe-sH-hKy"/>
                             <constraint firstItem="zv8-jB-Q4A" firstAttribute="leading" secondItem="o74-p3-wyS" secondAttribute="leading" constant="8" id="nxI-op-HyV"/>
                             <constraint firstItem="zv8-jB-Q4A" firstAttribute="top" secondItem="o74-p3-wyS" secondAttribute="top" constant="8" id="ozZ-bA-q7V"/>
+                            <constraint firstItem="o74-p3-wyS" firstAttribute="bottom" secondItem="bKx-UY-IEt" secondAttribute="bottom" constant="17" id="u4M-vz-t5V"/>
                             <constraint firstItem="o74-p3-wyS" firstAttribute="bottom" secondItem="a8L-ab-dHg" secondAttribute="bottom" constant="-20" id="zgF-SR-o4u"/>
                         </constraints>
                     </view>
@@ -263,6 +277,7 @@
         <image name="Backward" width="24" height="24"/>
         <image name="Exit" width="24" height="24"/>
         <image name="Photo" width="70" height="70"/>
+        <image name="Sharing" width="51" height="51"/>
         <image name="liked" width="42" height="42"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="30" height="30"/>
