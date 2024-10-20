@@ -108,72 +108,10 @@
                     <view key="view" contentMode="scaleToFill" id="y7X-PG-SEe">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Photo" translatesAutoresizingMaskIntoConstraints="NO" id="VMI-OB-q4S" userLabel="Avatar Image View">
-                                <rect key="frame" x="16" y="91" width="70" height="70"/>
-                                <color key="backgroundColor" name="YP Black (iOS)"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="70" id="FnM-0r-Ew8"/>
-                                    <constraint firstAttribute="width" secondItem="VMI-OB-q4S" secondAttribute="height" multiplier="1:1" id="Qmy-qE-eRH"/>
-                                </constraints>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Екатерина Новикова" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fq5-Wd-Qoa" userLabel="Name Label">
-                                <rect key="frame" x="16" y="169" width="361" height="27.666666666666657"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="23"/>
-                                <color key="textColor" name="YP White (iOS)"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@ekaterina_nov" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sw9-aV-oO7" userLabel="Login Name Label">
-                                <rect key="frame" x="16" y="204.66666666666666" width="361" height="15.666666666666657"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <color key="textColor" name="YP Gray (iOS)"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gi5-B1-Y2Q" userLabel="Logout Button">
-                                <rect key="frame" x="333" y="104" width="44" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="XnS-hQ-un6"/>
-                                    <constraint firstAttribute="width" constant="44" id="fUJ-od-Hhl"/>
-                                </constraints>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="Exit"/>
-                                <connections>
-                                    <action selector="didTapLogoutButtom:" destination="ygn-Ku-hJM" eventType="touchUpInside" id="KKr-hY-Sd0"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello, World!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qD5-Jc-6Jr" userLabel="Description Label">
-                                <rect key="frame" x="16" y="228.33333333333334" width="361" height="15.666666666666657"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <color key="textColor" name="YP White (iOS)"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="wl2-sE-ouH"/>
                         <color key="backgroundColor" name="YP Black (iOS)"/>
-                        <constraints>
-                            <constraint firstItem="Fq5-Wd-Qoa" firstAttribute="leading" secondItem="VMI-OB-q4S" secondAttribute="leading" id="0br-Re-Ubf"/>
-                            <constraint firstItem="sw9-aV-oO7" firstAttribute="leading" secondItem="Fq5-Wd-Qoa" secondAttribute="leading" id="2dR-q1-dwv"/>
-                            <constraint firstItem="Fq5-Wd-Qoa" firstAttribute="top" secondItem="VMI-OB-q4S" secondAttribute="bottom" constant="8" id="5mJ-L5-yYG"/>
-                            <constraint firstItem="qD5-Jc-6Jr" firstAttribute="trailing" secondItem="Fq5-Wd-Qoa" secondAttribute="trailing" id="RZZ-tE-Rx1"/>
-                            <constraint firstItem="VMI-OB-q4S" firstAttribute="top" secondItem="wl2-sE-ouH" secondAttribute="top" constant="32" id="S8x-6K-YbS"/>
-                            <constraint firstItem="VMI-OB-q4S" firstAttribute="leading" secondItem="wl2-sE-ouH" secondAttribute="leading" constant="16" id="VA6-NA-bz5"/>
-                            <constraint firstItem="wl2-sE-ouH" firstAttribute="trailing" secondItem="Gi5-B1-Y2Q" secondAttribute="trailing" constant="16" id="Y8w-kX-DgX"/>
-                            <constraint firstItem="qD5-Jc-6Jr" firstAttribute="top" secondItem="sw9-aV-oO7" secondAttribute="bottom" constant="8" id="bue-Lo-hPW"/>
-                            <constraint firstItem="sw9-aV-oO7" firstAttribute="top" secondItem="Fq5-Wd-Qoa" secondAttribute="bottom" constant="8" id="dHB-B7-Aye"/>
-                            <constraint firstItem="qD5-Jc-6Jr" firstAttribute="leading" secondItem="Fq5-Wd-Qoa" secondAttribute="leading" id="f3i-52-sdA"/>
-                            <constraint firstItem="Gi5-B1-Y2Q" firstAttribute="centerY" secondItem="VMI-OB-q4S" secondAttribute="centerY" id="gcs-Hb-mn6"/>
-                            <constraint firstItem="wl2-sE-ouH" firstAttribute="trailing" secondItem="Fq5-Wd-Qoa" secondAttribute="trailing" constant="16" id="hd0-1E-zee"/>
-                            <constraint firstItem="sw9-aV-oO7" firstAttribute="trailing" secondItem="Fq5-Wd-Qoa" secondAttribute="trailing" id="lbr-fg-KE3"/>
-                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="tab_profile_active" id="cFJ-mh-jWY"/>
-                    <connections>
-                        <outlet property="avatarImageView" destination="VMI-OB-q4S" id="N5e-f9-Vlo"/>
-                        <outlet property="descriptionLabel" destination="qD5-Jc-6Jr" id="wP3-E2-rTX"/>
-                        <outlet property="loginNameLabel" destination="sw9-aV-oO7" id="Gf4-kU-QIZ"/>
-                        <outlet property="logoutButton" destination="Gi5-B1-Y2Q" id="t5T-yj-ZvV"/>
-                        <outlet property="nameLabel" destination="Fq5-Wd-Qoa" id="h7y-m4-6Ey"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pk6-mF-3DQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -275,8 +213,6 @@
         <image name="11" width="853" height="1280"/>
         <image name="Active" width="42" height="42"/>
         <image name="Backward" width="24" height="24"/>
-        <image name="Exit" width="24" height="24"/>
-        <image name="Photo" width="70" height="70"/>
         <image name="Sharing" width="51" height="51"/>
         <image name="liked" width="42" height="42"/>
         <image name="tab_editorial_active" width="30" height="30"/>
@@ -286,9 +222,6 @@
         </namedColor>
         <namedColor name="YP Black (iOS)">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="YP Gray (iOS)">
-            <color red="0.68235294117647061" green="0.68627450980392157" blue="0.70588235294117652" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="YP White (iOS)">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
