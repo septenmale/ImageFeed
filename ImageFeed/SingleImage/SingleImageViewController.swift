@@ -12,10 +12,8 @@ final class SingleImageViewController: UIViewController {
         }
     }
     
-    
-    
-    @IBOutlet  var imageView: UIImageView!
-    @IBOutlet var scrollView: UIScrollView!
+    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private var scrollView: UIScrollView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,12 +24,13 @@ final class SingleImageViewController: UIViewController {
         imageView.image = image
         imageView.frame.size = image.size
         rescaleAndCenterImageInScrollView(image: image)
-        }
-    
-    @IBAction func didTapBackButton() { dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func didTapShareButton()  {
+    @IBAction private func didTapBackButton() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction private func didTapShareButton()  {
         guard let image else { return }
         let share = UIActivityViewController(
             activityItems: [image],
