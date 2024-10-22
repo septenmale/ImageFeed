@@ -10,8 +10,7 @@ final class ProfileViewController: UIViewController {
         return label
     }()
     
-    private let loginNameLabel: UILabel = {  // не нашел как исправить замечание п.3 Цвет поменял как было в фигме на серый, но с отступами не понимаю что не так. Так как отступ между nameBottom и loginNameTop должен быть такой же самый как и для loginNameBottom и descriptionTop тоесть 8. Качал специально авторское решение для этого задание когда делали в начале в Storyboard и там так же.
-        // Остальные замечания исправленны
+    private let loginNameLabel: UILabel = { 
         let label = UILabel()
         label.text = "@ekaterina_nov"
         label.textColor = .ypGrayIOS
