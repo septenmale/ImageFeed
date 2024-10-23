@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		776522E72CC7890C00F18B5C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776522E62CC7890800F18B5C /* Constants.swift */; };
+		776522EC2CC8F1E500F18B5C /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776522EB2CC8F1E500F18B5C /* AuthViewController.swift */; };
+		776522EE2CC8F49D00F18B5C /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776522ED2CC8F48F00F18B5C /* WebViewViewController.swift */; };
 		778BDFBB2CAC1C6B00DB3830 /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778BDFAF2CAC1C6B00DB3830 /* ImagesListCell.swift */; };
 		778BDFBC2CAC1C6B00DB3830 /* ImagesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778BDFB02CAC1C6B00DB3830 /* ImagesListViewController.swift */; };
 		778BDFBD2CAC1C6B00DB3830 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778BDFB22CAC1C6B00DB3830 /* AppDelegate.swift */; };
@@ -21,6 +23,8 @@
 
 /* Begin PBXFileReference section */
 		776522E62CC7890800F18B5C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		776522EB2CC8F1E500F18B5C /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
+		776522ED2CC8F48F00F18B5C /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
 		778BDFAF2CAC1C6B00DB3830 /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
 		778BDFB02CAC1C6B00DB3830 /* ImagesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListViewController.swift; sourceTree = "<group>"; };
 		778BDFB22CAC1C6B00DB3830 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -45,6 +49,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		776522E82CC8F16300F18B5C /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				776522ED2CC8F48F00F18B5C /* WebViewViewController.swift */,
+				776522EB2CC8F1E500F18B5C /* AuthViewController.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
 		778BDFB12CAC1C6B00DB3830 /* ImagesList */ = {
 			isa = PBXGroup;
 			children = (
@@ -59,10 +72,11 @@
 			children = (
 				778BDFB22CAC1C6B00DB3830 /* AppDelegate.swift */,
 				778BDFB92CAC1C6B00DB3830 /* SceneDelegate.swift */,
+				776522E62CC7890800F18B5C /* Constants.swift */,
 				77B6A1802CB90C0E002B2E86 /* Profile */,
 				778BDFB12CAC1C6B00DB3830 /* ImagesList */,
 				77D1235C2CBA6E4C0038BD59 /* SingleImage */,
-				776522E62CC7890800F18B5C /* Constants.swift */,
+				776522E82CC8F16300F18B5C /* Auth */,
 				778BDFB82CAC1C6B00DB3830 /* Main.storyboard */,
 				778BDFB32CAC1C6B00DB3830 /* Assets.xcassets */,
 				778BDFB62CAC1C6B00DB3830 /* LaunchScreen.storyboard */,
@@ -172,8 +186,10 @@
 				778BDFBC2CAC1C6B00DB3830 /* ImagesListViewController.swift in Sources */,
 				77B6A17F2CB83617002B2E86 /* ProfileViewController.swift in Sources */,
 				778BDFBD2CAC1C6B00DB3830 /* AppDelegate.swift in Sources */,
+				776522EC2CC8F1E500F18B5C /* AuthViewController.swift in Sources */,
 				776522E72CC7890C00F18B5C /* Constants.swift in Sources */,
 				77D123602CBA6EB30038BD59 /* SingleImageViewController.swift in Sources */,
+				776522EE2CC8F49D00F18B5C /* WebViewViewController.swift in Sources */,
 				778BDFBE2CAC1C6B00DB3830 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
