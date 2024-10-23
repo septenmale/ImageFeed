@@ -288,10 +288,29 @@
                     <view key="view" contentMode="scaleToFill" id="TX9-Zx-hOz">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sgf-Om-Xh3">
+                                <rect key="frame" x="0.0" y="103" width="393" height="749"/>
+                                <color key="backgroundColor" name="YP White (iOS)"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="ik7-ch-e7J"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Sgf-Om-Xh3" firstAttribute="leading" secondItem="TX9-Zx-hOz" secondAttribute="leading" id="NxH-ei-j9l"/>
+                            <constraint firstItem="Sgf-Om-Xh3" firstAttribute="top" secondItem="ik7-ch-e7J" secondAttribute="top" id="Z9p-6I-ZgR"/>
+                            <constraint firstAttribute="trailing" secondItem="Sgf-Om-Xh3" secondAttribute="trailing" id="gwg-Fp-vpQ"/>
+                            <constraint firstAttribute="bottom" secondItem="Sgf-Om-Xh3" secondAttribute="bottom" id="uRn-Wa-rZe"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="eqy-NK-l6r"/>
+                    <connections>
+                        <outlet property="webView" destination="Sgf-Om-Xh3" id="PpY-rR-7fO"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JdB-Hh-oZr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
