@@ -4,6 +4,8 @@ import WebKit
 final class WebViewViewController: UIViewController {
     @IBOutlet private var webView: WKWebView!
     
+    var delegate: WebViewViewContrrollerDelegate? // добавляю св-во делегата
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.navigationDelegate = self

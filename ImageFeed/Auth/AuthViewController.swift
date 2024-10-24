@@ -1,12 +1,28 @@
 import UIKit
 
-final class AuthViewController: UIViewController {
+final class AuthViewController: UIViewController, WebViewViewContrrollerDelegate {
     private let showWebViewSequeIdentifier = "ShowWebView"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureBackButton()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == showWebViewSequeIdentifier {
+            if let viewController = segue.destination as? WebViewViewController {
+               viewController.delegate = self
+            }
+        }
+    }
+    
+    func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
+        <#code#>
+    }
+    
+    func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
+        <#code#>
     }
     
     private func configureBackButton() {
