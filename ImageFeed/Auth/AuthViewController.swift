@@ -11,18 +11,24 @@ final class AuthViewController: UIViewController, WebViewViewContrrollerDelegate
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showWebViewSequeIdentifier {
-            if let viewController = segue.destination as? WebViewViewController {
-               viewController.delegate = self
+            guard
+                let viewController = segue.destination as? WebViewViewController
+            else {
+                assertionFailure("Failed to prepare for \(showWebViewSequeIdentifier)")
+                return
             }
+            viewController.delegate = self
+        } else {
+            super.prepare(for: segue, sender: sender)
         }
-    }
+    } // было по другому переделал как в решении 
     
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        <#code#>
+        //TODO: process code
     }
     
-    func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
-        <#code#>
+    func webViewViewControllerDidCancel(_ vc: WebViewViewController) { 
+         vc.dismiss(animated: true)
     }
     
     private func configureBackButton() {

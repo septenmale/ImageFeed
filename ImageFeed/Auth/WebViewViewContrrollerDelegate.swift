@@ -1,4 +1,4 @@
-protocol WebViewViewContrrollerDelegate {
+protocol WebViewViewContrrollerDelegate: AnyObject {
     func webViewViewController(
         _ vc: WebViewViewController,
         didAuthenticateWithCode code: String
