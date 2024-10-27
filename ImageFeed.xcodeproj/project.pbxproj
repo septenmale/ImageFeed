@@ -11,6 +11,7 @@
 		776522EC2CC8F1E500F18B5C /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776522EB2CC8F1E500F18B5C /* AuthViewController.swift */; };
 		776522EE2CC8F49D00F18B5C /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776522ED2CC8F48F00F18B5C /* WebViewViewController.swift */; };
 		776522F12CCA281000F18B5C /* WebViewViewContrrollerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776522F02CCA27FD00F18B5C /* WebViewViewContrrollerDelegate.swift */; };
+		776522F92CCE334500F18B5C /* OAuth2Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776522F82CCE332C00F18B5C /* OAuth2Service.swift */; };
 		778BDFBB2CAC1C6B00DB3830 /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778BDFAF2CAC1C6B00DB3830 /* ImagesListCell.swift */; };
 		778BDFBC2CAC1C6B00DB3830 /* ImagesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778BDFB02CAC1C6B00DB3830 /* ImagesListViewController.swift */; };
 		778BDFBD2CAC1C6B00DB3830 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778BDFB22CAC1C6B00DB3830 /* AppDelegate.swift */; };
@@ -28,6 +29,7 @@
 		776522ED2CC8F48F00F18B5C /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
 		776522EF2CC8F8FE00F18B5C /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		776522F02CCA27FD00F18B5C /* WebViewViewContrrollerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewContrrollerDelegate.swift; sourceTree = "<group>"; };
+		776522F82CCE332C00F18B5C /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
 		778BDFAF2CAC1C6B00DB3830 /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
 		778BDFB02CAC1C6B00DB3830 /* ImagesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListViewController.swift; sourceTree = "<group>"; };
 		778BDFB22CAC1C6B00DB3830 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -56,6 +58,7 @@
 			children = (
 				776522ED2CC8F48F00F18B5C /* WebViewViewController.swift */,
 				776522F02CCA27FD00F18B5C /* WebViewViewContrrollerDelegate.swift */,
+				776522F82CCE332C00F18B5C /* OAuth2Service.swift */,
 				776522EB2CC8F1E500F18B5C /* AuthViewController.swift */,
 			);
 			path = Auth;
@@ -191,6 +194,7 @@
 				776522F12CCA281000F18B5C /* WebViewViewContrrollerDelegate.swift in Sources */,
 				77B6A17F2CB83617002B2E86 /* ProfileViewController.swift in Sources */,
 				778BDFBD2CAC1C6B00DB3830 /* AppDelegate.swift in Sources */,
+				776522F92CCE334500F18B5C /* OAuth2Service.swift in Sources */,
 				776522EC2CC8F1E500F18B5C /* AuthViewController.swift in Sources */,
 				776522E72CC7890C00F18B5C /* Constants.swift in Sources */,
 				77D123602CBA6EB30038BD59 /* SingleImageViewController.swift in Sources */,

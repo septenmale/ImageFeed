@@ -44,6 +44,7 @@ final class WebViewViewController: UIViewController {
     
     enum WebViewConstants {
         static let unsplashAuthoriseURLString = "https://unsplash.com/oauth/authorize"
+        static let authReguestUrlString =
     }
     
     private func updateProgress() {
@@ -72,6 +73,10 @@ final class WebViewViewController: UIViewController {
         let reguest = URLRequest(url: url)
         webView.load(reguest)
     }
+    
+    private func authReguest() -> URLRequest? {
+        
+            }
     
     private func code(from navigationAction: WKNavigationAction) -> String? {
         if
