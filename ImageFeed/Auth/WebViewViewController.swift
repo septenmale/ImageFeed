@@ -12,7 +12,6 @@ final class WebViewViewController: UIViewController {
         webView.navigationDelegate = self
         
         loadAuthView()
-        authReguest(code: <#T##String#>)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -75,7 +74,7 @@ final class WebViewViewController: UIViewController {
         webView.load(reguest)
     }
     
-    private func authReguest(code: String) -> URLRequest? {
+    private func authTokenReguest(code: String) -> URLRequest? {
         guard var urlComponents = URLComponents(string: WebViewConstants.authReguestUrlString) else {
             print("Error: Failed to create urlComponents. Check authReguestUrlString.")
             return nil
