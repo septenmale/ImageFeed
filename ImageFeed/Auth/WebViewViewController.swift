@@ -44,7 +44,6 @@ final class WebViewViewController: UIViewController {
     
     enum WebViewConstants {
         static let unsplashAuthoriseURLString = "https://unsplash.com/oauth/authorize"
-        static let authReguestUrlString = "https://unsplash.com/oauth/token" // basic URL + Path
     }
     
     private func updateProgress() {
@@ -74,34 +73,7 @@ final class WebViewViewController: UIViewController {
         webView.load(reguest)
     }
     
-    private func authTokenReguest(code: String) -> URLRequest? {
-        guard var urlComponents = URLComponents(string: WebViewConstants.authReguestUrlString) else {
-            print("Error: Failed to create urlComponents. Check authReguestUrlString.")
-            return nil
-        }
-        
-        urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: Constants.accessKey),
-            URLQueryItem(name: "client_secret", value: Constants.secretKey),
-            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
-            URLQueryItem(name: "code", value: code),
-            //URLQueryItem(name: "code", value: code(from: WKNavigationAction())),
-            URLQueryItem(name: "grant_type", value: "authorization_code")
-        ]
-        
-        guard let url = urlComponents.url else {
-            print("Error: Failed to create URL from the provided URl components") // Debug output
-            return nil
-        }
-        
-        var reguest = URLRequest(url: url)
-        reguest.httpMethod = "POST"
-        
-        // Debug output: print the reguest
-        print("Auth reguest URL: \(url.absoluteString)")
-        print("HTTP Method: \(reguest.httpMethod ?? "nil")")
-        return reguest
-    }
+    
     
     private func code(from navigationAction: WKNavigationAction) -> String? {
         if
@@ -127,7 +99,18 @@ extension WebViewViewController: WKNavigationDelegate {
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
         if let code = code(from: navigationAction) {
-            //TODO: process code
+            
+            OAuth2Service.shared.fetchOAuthToken(with: code,
+                                                 handler: { (result: Result<String, Error>) -> Void in
+                switch result {
+                case .success(let token):
+                    print("token received: \(token)")
+                case .failure(let error):
+                    print("Error: Failed to receive token: \(error)")
+                }
+            }
+            )
+            
             decisionHandler(.cancel)
         } else {
             decisionHandler(.allow)
