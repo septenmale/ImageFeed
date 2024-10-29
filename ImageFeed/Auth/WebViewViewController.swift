@@ -97,22 +97,11 @@ extension WebViewViewController: WKNavigationDelegate {
         _ webView: WKWebView,
         decidePolicyFor navigationAction: WKNavigationAction,
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
-    ) { // этого быть не должно
+    ) { 
         if let code = code(from: navigationAction) {
             
-            // тут нужно через делегата передать код в AUTHVIEWCONTROLLER
-            
-//            OAuth2Service.shared.fetchOAuthToken(with: code,
-//                                                 handler: { (result: Result<String, Error>) -> Void in
-//                switch result {
-//                case .success(let token):
-//                    print("token received: \(token)")
-//                case .failure(let error):
-//                    print("Error: Failed to receive token: \(error)")
-//                }
-//            }
-//            )
-            
+            delegate?.webViewViewController(self, didAuthenticateWithCode: code)
+ 
             decisionHandler(.cancel)
         } else {
             decisionHandler(.allow)

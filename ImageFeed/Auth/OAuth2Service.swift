@@ -5,11 +5,11 @@ final class OAuth2Service {
     static let shared = OAuth2Service()
     private init() {}
     
-    private enum NetworkError: Error {
-        case codeError
-        case dataError
-        case tokenParsingError
-    }
+    //    private enum NetworkError: Error {
+    //        case codeError
+    //        case dataError
+    //        case tokenParsingError
+    //    }
     
     private func authTokenRequest(code: String) -> URLRequest? {
         guard var urlComponents = URLComponents(string: "https://unsplash.com/oauth/token") else {
@@ -41,26 +41,50 @@ final class OAuth2Service {
     
     func fetchOAuthToken(with code: String, handler: @escaping (Result<String, Error>) -> Void) {
         guard let request = authTokenRequest(code: code) else { // создаем URLRequest
-            handler(.failure(NetworkError.dataError))
+            handler(.failure(NetworkError.urlSessionError))
             return
         }
         
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in // выполняет сетевой запрос и получает ответ
-            if let error = error {                                                      // от сервера
-                handler(.failure(error))                                                // если произошла ошибка - возвразаем в замыкание
-                return
+        let task = URLSession.shared.data(for: request) { result in
+            switch result {
+            case .success(let data):
+                do {
+                    let decoder = JSONDecoder()
+                    let response = try decoder.decode(OAuthTokenResponseBody.self, from: data)
+                    handler(.success(response.accessToken))
+                    
+                    OAuth2TokenStorage.shared.token = response.accessToken
+                } catch {
+                    print("Error while decoding: \(error.localizedDescription)")
+                    handler(.failure(error))
+                }
+                
+            case . failure(let error):
+                print("Network error: \(error.localizedDescription)")
+                handler(.failure(error))
             }
-            
-            if let response = response as? HTTPURLResponse,                 // проверяем что ответ содержит код 200-299
-               response.statusCode < 200 || response.statusCode >= 300 {
-                handler(.failure(NetworkError.codeError))
-                return
-            }
-            
-            guard let data = data else {                                    // проверяем что данные не пусты
-                handler(.failure(NetworkError.dataError))
-                return
-            }
+        }
+        task.resume()
+    }
+    
+}
+        
+//        let task = URLSession.shared.dataTask(with: request) { data, response, error in // выполняет сетевой запрос и получает ответ
+//            if let error = error {                                                      // от сервера
+//                handler(.failure(error))                                                // если произошла ошибка - возвразаем в замыкание
+//                return
+//            }
+//            
+//            if let response = response as? HTTPURLResponse,                 // проверяем что ответ содержит код 200-299
+//               response.statusCode < 200 || response.statusCode >= 300 {
+//                handler(.failure(NetworkError.codeError))
+//                return
+//            }
+//            
+//            guard let data = data else {                                    // проверяем что данные не пусты
+//                handler(.failure(NetworkError.dataError))
+//                return
+//            }
             
 //            do {
 //                if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any], // парсим ответ чтобы извлечь acces_token
@@ -72,8 +96,4 @@ final class OAuth2Service {
 //            } catch {
 //                handler(.failure(error))
 //            }
-        }
-        task.resume()
-    }
-    
-}
+       
