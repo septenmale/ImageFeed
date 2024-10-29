@@ -62,16 +62,16 @@ final class OAuth2Service {
                 return
             }
             
-            do {
-                if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any], // парсим ответ чтобы извлечь acces_token
-                   let accesToken = json["acess_token"] as? String {
-                    handler(.success(accesToken))
-                } else {
-                    handler(.failure(NetworkError.tokenParsingError))                         // если не удалось найти возвращаем ошибку
-                }
-            } catch {
-                handler(.failure(error))
-            }
+//            do {
+//                if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any], // парсим ответ чтобы извлечь acces_token
+//                   let accesToken = json["acess_token"] as? String {
+//                    handler(.success(accesToken))
+//                } else {
+//                    handler(.failure(NetworkError.tokenParsingError))                         // если не удалось найти возвращаем ошибку
+//                }
+//            } catch {
+//                handler(.failure(error))
+//            }
         }
         task.resume()
     }
