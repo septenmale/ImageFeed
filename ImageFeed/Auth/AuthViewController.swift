@@ -26,21 +26,19 @@ final class AuthViewController: UIViewController, WebViewViewContrrollerDelegate
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         print("Received authorization code: \(code)")
         
-        OAuth2Service.shared.fetchOAuthToken(with: code,
-                                             handler: { (result: Result<String, Error>) -> Void in
+        OAuth2Service.shared.fetchOAuthToken(with: code) { result in
             switch result {
-            case .success(let token):
-                print("Token received: \(token)")
                 
+            case .success(let token):
                 OAuth2TokenStorage.shared.token = token // ??
-                print("Token received: \(token)")
+                print("Token received and saved: \(token)")
+                self.dismiss(animated: true)
                 
             case .failure(let error):
                 print("Error: token did not received: \(error.localizedDescription)")
             }
         }
-        )
-        print("")
+
     }
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
