@@ -1,7 +1,16 @@
 import UIKit
 
+protocol AuthViewControllerDelegate: AnyObject {
+    func didAuthenticate(_ vc: AuthViewController)
+}
+
+// этот класс будет проверять за class SplashViewController прошел ли пользователь аутентификацию
+// тоесть в нем обьявляем свойство делегат и будем сообщать SplashViewController о удачной идентификации
+// таким образом этот класс передает задачу по обработке SplashViewController не зная о его реализации
+
 final class AuthViewController: UIViewController, WebViewViewContrrollerDelegate {
     private let showWebViewSequeIdentifier = "ShowWebView"
+    weak var delegate: AuthViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +34,7 @@ final class AuthViewController: UIViewController, WebViewViewContrrollerDelegate
     
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         print("Received authorization code: \(code)")
+        vc.dismiss(animated: true)
         
         OAuth2Service.shared.fetchOAuthToken(with: code) { result in
             switch result {
@@ -34,6 +44,8 @@ final class AuthViewController: UIViewController, WebViewViewContrrollerDelegate
                 print("Token received and saved: \(token)")
                 self.dismiss(animated: true)
                 
+                self.delegate?.didAuthenticate(self)
+
             case .failure(let error):
                 print("Error: token did not received: \(error.localizedDescription)")
             }
