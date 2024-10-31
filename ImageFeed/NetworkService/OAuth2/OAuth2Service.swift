@@ -22,22 +22,22 @@ final class OAuth2Service {
         ]
         
         guard let url = urlComponents.url else {
-            print("Error: Failed to create URL from the provided URl components") 
+            print("Error: Failed to create URL from the provided URl components")
             return nil
         }
         
-        var reguest = URLRequest(url: url)
-        reguest.httpMethod = "POST"
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
         
-        print("Auth reguest URL: \(url.absoluteString)")
-        print("HTTP Method: \(reguest.httpMethod ?? "nil")")
-        return reguest
+        print("Auth request URL: \(url.absoluteString)")
+        print("HTTP Method: \(request.httpMethod ?? "nil")")
+        return request
     }
     
     func fetchOAuthToken(with code: String, handler: @escaping (Result<String, Error>) -> Void) {
         guard let request = authTokenRequest(code: code) else {
-            handler(.failure(NetworkError.urlSessionError))
             print("Error: Failed to create an authorization request for code \(code)")
+            handler(.failure(NetworkError.urlSessionError))
             return
         }
         

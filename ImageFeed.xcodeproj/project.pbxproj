@@ -68,12 +68,12 @@
 			path = Auth;
 			sourceTree = "<group>";
 		};
-		776523032CD2477800F18B5C /* SplashVC */ = {
+		776523032CD2477800F18B5C /* Splash */ = {
 			isa = PBXGroup;
 			children = (
 				776523042CD2478C00F18B5C /* SplashViewController.swift */,
 			);
-			path = SplashVC;
+			path = Splash;
 			sourceTree = "<group>";
 		};
 		776523062CD3649200F18B5C /* OAuth2 */ = {
@@ -111,7 +111,7 @@
 				778BDFB92CAC1C6B00DB3830 /* SceneDelegate.swift */,
 				776522E62CC7890800F18B5C /* Constants.swift */,
 				776523072CD364E200F18B5C /* NetworkService */,
-				776523032CD2477800F18B5C /* SplashVC */,
+				776523032CD2477800F18B5C /* Splash */,
 				77B6A1802CB90C0E002B2E86 /* Profile */,
 				778BDFB12CAC1C6B00DB3830 /* ImagesList */,
 				77D1235C2CBA6E4C0038BD59 /* SingleImage */,

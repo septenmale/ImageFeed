@@ -10,15 +10,20 @@ protocol WebViewViewControllerDelegate: AnyObject {
 }
 
 final class WebViewViewController: UIViewController {
+    
+    // MARK: - IB Outlets
     @IBOutlet private var webView: WKWebView!
     @IBOutlet private var progressView: UIProgressView!
     
+    // MARK: - Public Properties
     weak var delegate: WebViewViewControllerDelegate?
     
+    // MARK: - Private Properties
     private enum WebViewConstants {
         static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
     }
     
+    // MARK: - Overrides Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.navigationDelegate = self
@@ -55,6 +60,7 @@ final class WebViewViewController: UIViewController {
         }
     }
     
+    // MARK: - Private Methods
     private func updateProgress() {
         progressView.progress = Float(webView.estimatedProgress)
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.001
@@ -78,8 +84,8 @@ final class WebViewViewController: UIViewController {
             return
         }
         
-        let reguest = URLRequest(url: url)
-        webView.load(reguest)
+        let request = URLRequest(url: url)
+        webView.load(request)
     }
     
 }
