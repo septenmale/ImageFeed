@@ -1,11 +1,23 @@
 import UIKit
 import WebKit
 
+protocol WebViewViewContrrollerDelegate: AnyObject {
+    func webViewViewController(
+        _ vc: WebViewViewController,
+        didAuthenticateWithCode code: String
+    )
+    func webViewViewControllerDidCancel(_ vc: WebViewViewController)
+}
+
 final class WebViewViewController: UIViewController {
     @IBOutlet private var webView: WKWebView!
     @IBOutlet private var progressView: UIProgressView!
     
     weak var delegate: WebViewViewContrrollerDelegate? // добавляю св-во делегата
+    
+    enum WebViewConstants {
+        static let unsplashAuthoriseURLString = "https://unsplash.com/oauth/authorize"
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,10 +54,6 @@ final class WebViewViewController: UIViewController {
         }
     }
     
-    enum WebViewConstants {
-        static let unsplashAuthoriseURLString = "https://unsplash.com/oauth/authorize"
-    }
-    
     private func updateProgress() {
         progressView.progress = Float(webView.estimatedProgress)
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.001
@@ -73,7 +81,24 @@ final class WebViewViewController: UIViewController {
         webView.load(reguest)
     }
     
+}
+
+extension WebViewViewController: WKNavigationDelegate {
     
+    func webView(
+        _ webView: WKWebView,
+        decidePolicyFor navigationAction: WKNavigationAction,
+        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
+    ) {
+        if let code = code(from: navigationAction) {
+            
+            delegate?.webViewViewController(self, didAuthenticateWithCode: code)
+            decisionHandler(.cancel)
+            
+        } else {
+            decisionHandler(.allow)
+        }
+    }
     
     private func code(from navigationAction: WKNavigationAction) -> String? {
         if
@@ -87,24 +112,6 @@ final class WebViewViewController: UIViewController {
             return codeItem.value
         } else {
             return nil
-        }
-    }
-    
-}
-
-extension WebViewViewController: WKNavigationDelegate {
-    func webView(
-        _ webView: WKWebView,
-        decidePolicyFor navigationAction: WKNavigationAction,
-        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
-    ) { 
-        if let code = code(from: navigationAction) {
-            
-            delegate?.webViewViewController(self, didAuthenticateWithCode: code)
-            decisionHandler(.cancel)
-            
-        } else {
-            decisionHandler(.allow)
         }
     }
     
