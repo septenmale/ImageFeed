@@ -5,7 +5,7 @@ protocol AuthViewControllerDelegate: AnyObject {
 }
 
 final class AuthViewController: UIViewController {
-    private let showWebViewSequeIdentifier = "ShowWebView"
+    private let showWebViewSegueIdentifier = "ShowWebView"
     weak var delegate: AuthViewControllerDelegate?
     
     override func viewDidLoad() {
@@ -15,11 +15,10 @@ final class AuthViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showWebViewSequeIdentifier {
-            guard
-                let viewController = segue.destination as? WebViewViewController
+        if segue.identifier == showWebViewSegueIdentifier {
+            guard let viewController = segue.destination as? WebViewViewController
             else {
-                assertionFailure("Failed to prepare for \(showWebViewSequeIdentifier)")
+                assertionFailure("Failed to prepare for \(showWebViewSegueIdentifier)")
                 return
             }
             viewController.delegate = self
@@ -37,17 +36,16 @@ final class AuthViewController: UIViewController {
     
 }
 
-extension AuthViewController: WebViewViewContrrollerDelegate {
+extension AuthViewController: WebViewViewControllerDelegate {
     
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         print("Received authorization code: \(code)")
         vc.dismiss(animated: true)
-        
         OAuth2Service.shared.fetchOAuthToken(with: code) { result in
             switch result {
                 
             case .success(let token):
-                OAuth2TokenStorage.shared.token = token 
+                OAuth2TokenStorage.shared.token = token
                 print("Token received and saved: \(token)")
                 self.dismiss(animated: true)
                 

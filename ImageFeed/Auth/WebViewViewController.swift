@@ -1,7 +1,7 @@
 import UIKit
 import WebKit
 
-protocol WebViewViewContrrollerDelegate: AnyObject {
+protocol WebViewViewControllerDelegate: AnyObject {
     func webViewViewController(
         _ vc: WebViewViewController,
         didAuthenticateWithCode code: String
@@ -13,10 +13,10 @@ final class WebViewViewController: UIViewController {
     @IBOutlet private var webView: WKWebView!
     @IBOutlet private var progressView: UIProgressView!
     
-    weak var delegate: WebViewViewContrrollerDelegate? // добавляю св-во делегата
+    weak var delegate: WebViewViewControllerDelegate?
     
-    enum WebViewConstants {
-        static let unsplashAuthoriseURLString = "https://unsplash.com/oauth/authorize"
+    private enum WebViewConstants {
+        static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
     }
     
     override func viewDidLoad() {
@@ -32,7 +32,8 @@ final class WebViewViewController: UIViewController {
             self,
             forKeyPath: #keyPath(WKWebView.estimatedProgress),
             options: .new,
-            context: nil)
+            context: nil
+        )
         updateProgress()
     }
     
@@ -60,7 +61,7 @@ final class WebViewViewController: UIViewController {
     }
     
     private func loadAuthView() {
-        guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthoriseURLString) else {
+        guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString) else {
             print("Error: Failed to create urlComponents. Check unsplashAuthoriseURLString.")
             return
         }

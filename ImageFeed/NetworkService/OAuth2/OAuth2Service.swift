@@ -4,6 +4,7 @@ import WebKit
 final class OAuth2Service {
     
     static let shared = OAuth2Service()
+    
     private init() {}
     
     private func authTokenRequest(code: String) -> URLRequest? {
@@ -36,6 +37,7 @@ final class OAuth2Service {
     func fetchOAuthToken(with code: String, handler: @escaping (Result<String, Error>) -> Void) {
         guard let request = authTokenRequest(code: code) else {
             handler(.failure(NetworkError.urlSessionError))
+            print("Error: Failed to create an authorization request for code \(code)")
             return
         }
         
