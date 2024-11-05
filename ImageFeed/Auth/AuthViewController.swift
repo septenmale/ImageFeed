@@ -49,10 +49,10 @@ extension AuthViewController: WebViewViewControllerDelegate {
         print("Received authorization code: \(code)")
         vc.dismiss(animated: true)
         
-        ProgressHUD.animate()
+        UIBlockingProgressHud.show() // ProgressHUD.animate()
         OAuth2Service.shared.fetchOAuthToken(with: code) { result in
             
-            ProgressHUD.dismiss()
+            UIBlockingProgressHud.dismiss()      //ProgressHUD.dismiss()
             switch result {
                 
             case .success(let token):
