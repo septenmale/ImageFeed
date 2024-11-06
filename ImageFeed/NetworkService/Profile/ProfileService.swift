@@ -1,3 +1,4 @@
+import WebKit
 
 struct Profile { // вынес отдельно так как это модель данных, предназначенная для UI-слоя, а ProfileService - ceть
     let userName: String
@@ -5,7 +6,7 @@ struct Profile { // вынес отдельно так как это модел�
     let loginName: String
     let bio: String
     
-    init(from profileResult: ProfileResult) {
+    init(from profileResult: ProfileResultResponseBody) {
         self.userName = profileResult.userName
         self.name = "\(profileResult.firstName) \(profileResult.lastName)"
         self.loginName = "@\(profileResult.userName)"
@@ -15,5 +16,62 @@ struct Profile { // вынес отдельно так как это модел�
 }
 
 final class ProfileService {
+    
+    private func userPublicProfileRequest(token: String) -> URLRequest? {
+        
+        let unsplashBaseURLString = "https://unsplash.com" // создаю базовый url
+        
+        guard let url = URL(string: "\(unsplashBaseURLString)/me") else {
+            print("Error: Failed to create urlComponents.Check unsplashBaseURLString")
+            return nil
+        }
+        
+        var request = URLRequest(url: url) // cоздаю реквест Написать дальше тип запрос
+        request.httpMethod = "GET"         // Написать дальше тип запрос
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization") // задаю header
+        
+        print("Profile request URL: \(url.absoluteString)")
+        print("HTTP method: \(request.httpMethod ?? "nil")")
+        guard let authHeader = request.value(forHTTPHeaderField: "Authorization") else {
+            print("Error: Failed to get Authorization header.")
+            return nil
+        }
+        print("Authorization header: \(authHeader)")
+        
+        return request
+    }
+    
+    func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
+        
+        guard let request = userPublicProfileRequest(token: token) else { // запрос на получение profile c данным token
+            print("Error: Failed to a request for token \(token)")
+            completion(.failure(NetworkError.urlSessionError))
+            return
+        }
+        
+        let task = URLSession.shared.data(for: request) { result in
+            DispatchQueue.main.async {
+                switch result { // обработка результата
+                    
+                case .success(let data):
+                    do {
+                        let decoder = JSONDecoder()
+                        let response = try decoder.decode(ProfileResultResponseBody.self, from: data)
+                        let profile = Profile(from: response) // Преобразуем response в Profile и возвращаем
+                        completion( .success(profile))        // через замыкание
+                    } catch {
+                        print("Error while decoding profile JSON: \(error.localizedDescription)")
+                        completion( .failure(error))
+                    }
+                    
+                case .failure(let error):
+                    print("Network error: \(error.localizedDescription)")
+                    completion( .failure(error))
+                }
+            }
+        }
+        
+        task.resume()
+    }
     
 }

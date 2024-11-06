@@ -1,4 +1,4 @@
-struct ProfileResult: Decodable { // в примере предлагают codable, додумался изменить на Decodable
+struct ProfileResultResponseBody: Decodable { // в примере предлагают codable, додумался изменить на Decodable
     let userName: String
     let firstName: String
     let lastName: String
