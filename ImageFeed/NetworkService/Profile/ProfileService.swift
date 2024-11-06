@@ -15,7 +15,14 @@ struct Profile { // вынес отдельно так как это модел�
     
 }
 
+enum ProfileServiceError: Error {
+    case invalidRequest
+}
+
 final class ProfileService {
+    
+    private var lastTask: URLSessionTask?
+    private var lastToken: String?
     
     private func userPublicProfileRequest(token: String) -> URLRequest? {
         
@@ -42,6 +49,15 @@ final class ProfileService {
     }
     
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        
+        guard lastToken != token else {
+            completion( .failure(ProfileServiceError.invalidRequest))
+            return
+        }
+        
+        lastTask?.cancel()
+        lastToken = token
         
         guard let request = userPublicProfileRequest(token: token) else { // запрос на получение profile c данным token
             print("Error: Failed to a request for token \(token)")
@@ -51,8 +67,11 @@ final class ProfileService {
         
         let task = URLSession.shared.data(for: request) { result in
             DispatchQueue.main.async {
+                
+                self.lastTask = nil // вызываю тут чтобы независимо от результата completion значение обнулится
+                self.lastToken = nil
+                
                 switch result { // обработка результата
-                    
                 case .success(let data):
                     do {
                         let decoder = JSONDecoder()
@@ -71,6 +90,7 @@ final class ProfileService {
             }
         }
         
+        self.lastToken = token
         task.resume()
     }
     

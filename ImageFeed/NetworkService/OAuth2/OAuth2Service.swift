@@ -74,6 +74,10 @@ final class OAuth2Service {
         
         let task = URLSession.shared.data(for: request) { result in
             DispatchQueue.main.async {
+                
+                self.lastTask = nil
+                self.lastCode = nil
+                
                 switch result {
                 case .success(let data):
                     do {
@@ -90,8 +94,6 @@ final class OAuth2Service {
                 case . failure(let error):
                     print("Network error: \(error.localizedDescription)")
                     handler(.failure(error))
-                    self.lastTask = nil
-                    self.lastCode = nil
                 }
             }
         }
