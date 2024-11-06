@@ -95,3 +95,5 @@ final class ProfileService {
     }
     
 }
+
+// сделал все задания, получил такую ошибку: Error while decoding profile JSON: The data couldn’t be read because it isn’t in the correct format.

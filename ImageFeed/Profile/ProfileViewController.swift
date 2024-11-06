@@ -2,6 +2,8 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
+    private let profileService = ProfileService()
+    
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.text = "Екатерина Новикова"
@@ -41,6 +43,31 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupConstraints()
+        
+        checkTokenAndFetchProfile()
+    }
+    
+    private func checkTokenAndFetchProfile() {
+        
+        guard let token = OAuth2TokenStorage.shared.token else {
+            print("Error: No OAuth token found")
+            return
+        }
+        fetchProfile(with: token)
+    }
+    
+    private func fetchProfile(with token: String) {
+        profileService.fetchProfile(token) { [weak self] result in
+                    switch result {
+                    case .success(let profile):
+                        self?.nameLabel.text = profile.name
+                        self?.loginNameLabel.text = profile.loginName
+                        self?.descriptionLabel.text = profile.bio
+                        
+                    case .failure(let error):
+                        print("Failed to fetch profile: \(error.localizedDescription)")
+                    }
+                }
     }
     
     private func setupConstraints() {
