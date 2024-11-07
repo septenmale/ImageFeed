@@ -2,7 +2,7 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
-    private let profileService = ProfileService()
+    private let profileService = ProfileService.shared
     
     private let nameLabel: UILabel = {
         let label = UILabel()
@@ -44,30 +44,39 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         setupConstraints()
         
-        checkTokenAndFetchProfile()
-    }
-    
-    private func checkTokenAndFetchProfile() {
-        
-        guard let token = OAuth2TokenStorage.shared.token else {
-            print("Error: No OAuth token found")
-            return
+        if let profile = profileService.profile {
+            updateProfileDetails(profile: profile)
         }
-        fetchProfile(with: token)
+       // checkTokenAndFetchProfile()
     }
     
-    private func fetchProfile(with token: String) {
-        profileService.fetchProfile(token) { [weak self] result in
-                    switch result {
-                    case .success(let profile):
-                        self?.nameLabel.text = profile.name
-                        self?.loginNameLabel.text = profile.loginName
-                        self?.descriptionLabel.text = profile.bio
-                        
-                    case .failure(let error):
-                        print("Failed to fetch profile: \(error.localizedDescription)")
-                    }
-                }
+//    private func checkTokenAndFetchProfile() {
+//        
+//        guard let token = OAuth2TokenStorage.shared.token else {
+//            print("Error: No OAuth token found")
+//            return
+//        }
+//            // fetchProfile(with: token)
+//    }
+//    
+//    private func fetchProfile(with token: String) {
+//        profileService.fetchProfile(token) { [weak self] result in
+//                    switch result {
+//                    case .success(let profile):
+//                        self?.nameLabel.text = profile.name
+//                        self?.loginNameLabel.text = profile.loginName
+//                        self?.descriptionLabel.text = profile.bio
+//                        
+//                    case .failure(let error):
+//                        print("Failed to fetch profile: \(error.localizedDescription)")
+//                    }
+//                }
+//    }
+    
+    private func updateProfileDetails(profile: Profile) {
+        nameLabel.text = profile.name
+        loginNameLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio
     }
     
     private func setupConstraints() {

@@ -21,6 +21,12 @@ enum ProfileServiceError: Error {
 
 final class ProfileService {
     
+    static let shared = ProfileService() // имплементировал singletone
+    
+    private init() {}
+    
+    private(set) var profile: Profile?
+    
     private var lastTask: URLSessionTask?
     private var lastToken: String?
     
@@ -76,8 +82,9 @@ final class ProfileService {
                     do {
                         let decoder = JSONDecoder()
                         let response = try decoder.decode(ProfileResultResponseBody.self, from: data)
-                        let profile = Profile(from: response) // Преобразуем response в Profile и возвращаем
-                        completion( .success(profile))        // через замыкание
+                        let profile = Profile(from: response)   // Преобразуем response в Profile и возвращаем
+                        self.profile = profile   // добавил в 1Б
+                        completion( .success(profile))          // через замыкание
                     } catch {
                         print("Error while decoding profile JSON: \(error.localizedDescription)")
                         completion( .failure(error))

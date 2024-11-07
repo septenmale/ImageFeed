@@ -4,7 +4,7 @@ import ProgressHUD
 class SplashViewController: UIViewController {
 
     private let showAuthenticationScreenSegueIdentifier = "ShowAuthScreen"
-    private let profileService = ProfileService()
+    private let profileService = ProfileService.shared
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)

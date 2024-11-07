@@ -67,12 +67,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		77152EF52CDA898A00179D83 /* Profile */ = {
+		77152EF52CDA898A00179D83 /* ProfileService */ = {
 			isa = PBXGroup;
 			children = (
 				77152EF62CDA89A800179D83 /* ProfileService.swift */,
 			);
-			path = Profile;
+			path = ProfileService;
 			sourceTree = "<group>";
 		};
 		776522E82CC8F16300F18B5C /* Auth */ = {
@@ -107,7 +107,7 @@
 				776522FA2CCFAC1200F18B5C /* URLSession+data.swift */,
 				776522FC2CD0C21700F18B5C /* OAuthTokenResponseBody.swift */,
 				77152EF82CDA8A3700179D83 /* ProfileResultResponseBody.swift */,
-				77152EF52CDA898A00179D83 /* Profile */,
+				77152EF52CDA898A00179D83 /* ProfileService */,
 				776523062CD3649200F18B5C /* OAuth2 */,
 			);
 			path = NetworkService;
