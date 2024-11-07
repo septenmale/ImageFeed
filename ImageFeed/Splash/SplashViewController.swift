@@ -1,14 +1,16 @@
 import UIKit
+import ProgressHUD
 
 class SplashViewController: UIViewController {
 
     private let showAuthenticationScreenSegueIdentifier = "ShowAuthScreen"
+    private let profileService = ProfileService()
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         if let token = OAuth2TokenStorage.shared.token {
-            switchToTabBarController()
+            fetchProfile(token)
         } else {
             performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
         }
@@ -54,7 +56,31 @@ extension SplashViewController: AuthViewControllerDelegate {
     
     func didAuthenticate(_ vc: AuthViewController) {
         vc.dismiss(animated: true)
-        switchToTabBarController()
+//        switchToTabBarController() это должно произойдет по завершению fetchProfile
+        
+        guard let token = OAuth2TokenStorage.shared.token else {
+            print("Error: no auth token found")
+            return
+        }
+        fetchProfile(token)
+    }
+    
+    private func fetchProfile(_ token: String) {
+        UIBlockingProgressHud.show()
+        profileService.fetchProfile(token) { [weak self] result in
+            UIBlockingProgressHud.dismiss()
+            
+            guard let self = self else { return }
+            
+            switch result {
+            case .success:
+                self.switchToTabBarController()
+                
+            case .failure(let error):
+                print("Failed to fetch profile: \(error.localizedDescription)")
+                break
+            }
+        }
     }
     
 }
