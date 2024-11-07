@@ -26,7 +26,7 @@ final class ProfileService {
     
     private func userPublicProfileRequest(token: String) -> URLRequest? {
         
-        let unsplashBaseURLString = "https://unsplash.com" // создаю базовый url
+        let unsplashBaseURLString = "https://api.unsplash.com" // создаю базовый url
         
         guard let url = URL(string: "\(unsplashBaseURLString)/me") else {
             print("Error: Failed to create urlComponents.Check unsplashBaseURLString")
@@ -95,5 +95,3 @@ final class ProfileService {
     }
     
 }
-
-// сделал все задания, получил такую ошибку: Error while decoding profile JSON: The data couldn’t be read because it isn’t in the correct format.
