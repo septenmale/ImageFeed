@@ -1,7 +1,7 @@
 import Foundation
 
 struct UserResult: Decodable {
-    let profileImage: URL
+    let profileImageSmallURL: URL
     
     enum CodingKeys: String, CodingKey {
         case profileImage = "profile_image"
@@ -18,7 +18,7 @@ struct UserResult: Decodable {
             // Создаем вложенный контейнер для profile_image, чтобы добраться до ключа "small"
             let profileImageContainer = try container.nestedContainer(keyedBy: ProfileImageKeys.self, forKey: .profileImage)
             // Извлекаем URL для ключа "small" из вложенного контейнера и присваиваем его свойству `profileImageSmallURL
-            profileImage = try profileImageContainer.decode(URL.self, forKey: .small)
+            profileImageSmallURL = try profileImageContainer.decode(URL.self, forKey: .small)
         } catch {
             print("Error while decoding UserResult: \(error.localizedDescription)")
             throw error
