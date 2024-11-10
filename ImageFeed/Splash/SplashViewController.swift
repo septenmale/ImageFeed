@@ -14,6 +14,7 @@ class SplashViewController: UIViewController {
         } else {
             performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
         }
+        
     }
     
     private func switchToTabBarController() {
@@ -73,7 +74,10 @@ extension SplashViewController: AuthViewControllerDelegate {
             guard let self = self else { return }
             
             switch result {
-            case .success:
+            case .success(let profile): // Профиль загружен успешно, теперь можно получить аватар пользователя
+                // Вызываем fetchProfileImageURL для загрузки аватара асинхронно
+                ProfileImageService.shared.fetchProfileImageURL(username: profile.userName) { _ in }
+                // Переход к следующему экрану (галерее) без ожидания завершения загрузки аватара
                 self.switchToTabBarController()
                 
             case .failure(let error):
@@ -84,3 +88,6 @@ extension SplashViewController: AuthViewControllerDelegate {
     }
     
 }
+
+
+// Закончил ProfileImageService. Проблемы могут быть с устранением гонок и вызовом fetchProfileImageURL в SplashViewController
