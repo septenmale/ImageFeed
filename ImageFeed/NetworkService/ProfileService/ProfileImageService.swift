@@ -8,6 +8,9 @@ final class ProfileImageService {
     
     static let shared = ProfileImageService()
     
+    // добавляю имя новой нотификации
+    static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
+    
     private init() {}
     
     private(set) var avatarURL: String?
@@ -33,13 +36,13 @@ final class ProfileImageService {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         print("ProfileImage request URL: \(url.absoluteString)")
-        print("HTTP method: \(request.httpMethod ?? "nil")")
+        print("HTTP method For ProfileImage: \(request.httpMethod ?? "nil")")
         
         guard let authHeader = request.value(forHTTPHeaderField: "Authorization") else {
             print("Error: Failed to get Authorization header")
             return nil
         }
-        print("Authorization header: \(authHeader)")
+        print("Authorization header For ProfileImage: \(authHeader)")
         
         return request
     }
@@ -81,6 +84,14 @@ final class ProfileImageService {
                         let response = try decoder.decode(UserResult.self, from: data)
                         self.avatarURL = response.profileImageSmallURL.absoluteString
                         completion(.success(response.profileImageSmallURL.absoluteString))
+                        
+            // Добавляю публикацию нотификации после выполнения completion
+                        NotificationCenter.default.post(
+                            name: ProfileImageService.didChangeNotification,
+                            object: self,
+                            userInfo: ["URL": self.avatarURL ?? ""]
+                        )
+                        
                     } catch {
                         print("Error while decoding userImage: \(error.localizedDescription)")
                         completion(.failure(error))

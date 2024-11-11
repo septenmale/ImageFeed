@@ -2,6 +2,9 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
+    // обьявляю проперти для хранения обсервера
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
     private let profileService = ProfileService.shared
     
     private let nameLabel: UILabel = {
@@ -47,31 +50,28 @@ final class ProfileViewController: UIViewController {
         if let profile = profileService.profile {
             updateProfileDetails(profile: profile)
         }
-       // checkTokenAndFetchProfile()
+        
+        // Присваиваем в profileImageServiceObserver обсервер, возвращаемый функцией addObserver
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
+        updateAvatar()
     }
     
-//    private func checkTokenAndFetchProfile() {
-//        
-//        guard let token = OAuth2TokenStorage.shared.token else {
-//            print("Error: No OAuth token found")
-//            return
-//        }
-//            // fetchProfile(with: token)
-//    }
-//    
-//    private func fetchProfile(with token: String) {
-//        profileService.fetchProfile(token) { [weak self] result in
-//                    switch result {
-//                    case .success(let profile):
-//                        self?.nameLabel.text = profile.name
-//                        self?.loginNameLabel.text = profile.loginName
-//                        self?.descriptionLabel.text = profile.bio
-//                        
-//                    case .failure(let error):
-//                        print("Failed to fetch profile: \(error.localizedDescription)")
-//                    }
-//                }
-//    }
+    // Метод для обновления аватарки
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        // TODO: [Sprint 11] Обновить аватар, используя Kingfisher
+    }
     
     private func updateProfileDetails(profile: Profile) {
         nameLabel.text = profile.name

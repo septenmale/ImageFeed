@@ -5,6 +5,7 @@ class SplashViewController: UIViewController {
 
     private let showAuthenticationScreenSegueIdentifier = "ShowAuthScreen"
     private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -76,7 +77,8 @@ extension SplashViewController: AuthViewControllerDelegate {
             switch result {
             case .success(let profile): // Профиль загружен успешно, теперь можно получить аватар пользователя
                 // Вызываем fetchProfileImageURL для загрузки аватара асинхронно
-                ProfileImageService.shared.fetchProfileImageURL(username: profile.userName) { _ in }
+                profileImageService.fetchProfileImageURL(username: profile.userName) { _ in }
+                print("Profile image loading")
                 // Переход к следующему экрану (галерее) без ожидания завершения загрузки аватара
                 self.switchToTabBarController()
                 
