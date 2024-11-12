@@ -49,22 +49,9 @@ final class OAuth2Service {
             handler(.failure(AuthServiceError.invalidRequest))
             return
         }
-//        if lastTask != nil { // пр-м вып-ся ли щас пост запрос
-//            if lastCode != code { // пр-м что в запросе который щас в процессе такое же как в аргументе
-//                lastTask?.cancel() // отменяем запрос: code не актуальный
-//            } else {
-//                handler(.failure(AuthServiceError.invalidRequest))
-//                return
-//            }
-//        } else {
-//            if lastCode == code { // запросов нет, но токен для данного code получен
-//                handler(.failure(AuthServiceError.invalidRequest))
-//                return
-//            }
-//        }
-        lastTask?.cancel() // если решусь вернуться - удалить
+
+        lastTask?.cancel()
         lastCode = code
-        
         
         guard let request = authTokenRequest(code: code) else { // Создаём запрос на получение Auth Token c даным кодом
             print("Error: Failed to create an authorization request for code \(code)")
@@ -72,27 +59,20 @@ final class OAuth2Service {
             return
         }
         
-        let task = URLSession.shared.data(for: request) { result in
+        let session = URLSession.shared
+        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
             DispatchQueue.main.async {
                 
-                self.lastTask = nil
-                self.lastCode = nil
+                self?.lastTask = nil
+                self?.lastCode = nil
                 
                 switch result {
-                case .success(let data):
-                    do {
-                        let decoder = JSONDecoder()
-                        let response = try decoder.decode(OAuthTokenResponseBody.self, from: data)
-                        handler(.success(response.accessToken))
-                        
-                        OAuth2TokenStorage.shared.token = response.accessToken
-                    } catch {
-                        print("Error while decoding: \(error.localizedDescription)")
-                        handler(.failure(error))
-                    }
+                case .success(let response):
+                    print("Token response: \(response.accessToken)")
+                    handler(.success(response.accessToken))
                     
                 case . failure(let error):
-                    print("Network error: \(error.localizedDescription)")
+                    print("Failed to fetch token: \(error)")
                     handler(.failure(error))
                 }
             }
