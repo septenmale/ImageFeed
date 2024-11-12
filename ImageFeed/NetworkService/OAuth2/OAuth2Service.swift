@@ -59,7 +59,7 @@ final class OAuth2Service {
             return
         }
         
-        let session = URLSession.shared
+        // let session = URLSession.shared
         let task = urlSession.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
             DispatchQueue.main.async {
                 
@@ -71,7 +71,8 @@ final class OAuth2Service {
                     print("Token response: \(response.accessToken)")
                     handler(.success(response.accessToken))
                     
-                case . failure(let error):
+                case .failure(let error):
+                    // [название метода и/или сервиса]: [тип ошибки] [параметры, с которыми получили ошибку]
                     print("Failed to fetch token: \(error)")
                     handler(.failure(error))
                 }

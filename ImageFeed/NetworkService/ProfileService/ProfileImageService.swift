@@ -71,35 +71,29 @@ final class ProfileImageService {
             return
         }
         
-        let task = URLSession.shared.data(for: request) { result in
+        let urlSession = URLSession.shared
+        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<UserResult, Error>) in
             DispatchQueue.main.async {
                 
-                self.lastTask = nil
-                self.lastToken = nil
+                self?.lastTask = nil
+                self?.lastToken = nil
                 
                 switch result {
-                case .success(let data):
-                    do {
-                        let decoder = JSONDecoder()
-                        let response = try decoder.decode(UserResult.self, from: data)
-                        self.avatarURL = response.profileImageSmallURL.absoluteString
+                case .success(let response):
+                    self?.avatarURL = response.profileImageSmallURL.absoluteString
                         completion(.success(response.profileImageSmallURL.absoluteString))
                         
             // Добавляю публикацию нотификации после выполнения completion
                         NotificationCenter.default.post(
                             name: ProfileImageService.didChangeNotification,
                             object: self,
-                            userInfo: ["URL": self.avatarURL ?? ""]
+                            userInfo: ["URL": self?.avatarURL ?? ""]
                         )
-                        
-                    } catch {
-                        print("Error while decoding userImage: \(error.localizedDescription)")
-                        completion(.failure(error))
-                    }
                     
-                case .failure(let error):
-                    print("Network error: \(error.localizedDescription)")
-                    completion(.failure(error))
+            case .failure(let error):
+                    // [название метода и/или сервиса]: [тип ошибки] [параметры, с которыми получили ошибку]
+                        print("Error fetching user profile image: \(error.localizedDescription)")
+                        completion(.failure(error))
                 }
             }
         }

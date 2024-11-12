@@ -71,26 +71,22 @@ final class ProfileService {
             return
         }
         
-        let task = URLSession.shared.data(for: request) { result in
+        let urlSession = URLSession.shared
+        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<ProfileResultResponseBody, Error>) in
             DispatchQueue.main.async {
                 
-                self.lastTask = nil // вызываю тут чтобы независимо от результата completion значение обнулится
-                self.lastToken = nil
+                self?.lastTask = nil // вызываю тут чтобы независимо от результата completion значение обнулится
+                self?.lastToken = nil
                 
                 switch result { // обработка результата
-                case .success(let data):
-                    do {
-                        let decoder = JSONDecoder()
-                        let response = try decoder.decode(ProfileResultResponseBody.self, from: data)
-                        let profile = Profile(from: response)   // Преобразуем response в Profile и возвращаем
-                        self.profile = profile   // добавил в 1Б
-                        completion( .success(profile))          // через замыкание
-                    } catch {
-                        print("Error while decoding profile JSON: \(error.localizedDescription)")
-                        completion( .failure(error))
-                    }
+                case .success(let response):
+                    let profile = Profile(from: response)   // Преобразуем response в Profile и возвращаем
+                    self?.profile = profile   // добавил в 1Б
+                    completion( .success(profile))          // через замыкание
+                    
                     
                 case .failure(let error):
+                    // [название метода и/или сервиса]: [тип ошибки] [параметры, с которыми получили ошибку]
                     print("Network error: \(error.localizedDescription)")
                     completion( .failure(error))
                 }
