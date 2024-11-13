@@ -66,7 +66,7 @@ final class ProfileService {
         lastToken = token
         
         guard let request = userPublicProfileRequest(token: token) else { // запрос на получение profile c данным token
-            print("Error: Failed to a request for token \(token)")
+            print("[ProfileService]: Error: Failed to request for token \(token)")
             completion(.failure(NetworkError.urlSessionError))
             return
         }
@@ -86,8 +86,8 @@ final class ProfileService {
                     
                     
                 case .failure(let error):
-                    // [название метода и/или сервиса]: [тип ошибки] [параметры, с которыми получили ошибку]
-                    print("Network error: \(error.localizedDescription)")
+                    // Логирование ошибки
+                    print("[ProfileService]: Error while fetching profile: \(error.localizedDescription)")
                     completion( .failure(error))
                 }
             }

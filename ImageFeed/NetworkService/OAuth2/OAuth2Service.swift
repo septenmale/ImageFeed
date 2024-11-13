@@ -49,12 +49,12 @@ final class OAuth2Service {
             handler(.failure(AuthServiceError.invalidRequest))
             return
         }
-
+        
         lastTask?.cancel()
         lastCode = code
         
         guard let request = authTokenRequest(code: code) else { // Создаём запрос на получение Auth Token c даным кодом
-            print("Error: Failed to create an authorization request for code \(code)")
+            print("[OAuthService]: Error while creating an request for code \(code)")
             handler(.failure(NetworkError.urlSessionError))
             return
         }
@@ -72,8 +72,8 @@ final class OAuth2Service {
                     handler(.success(response.accessToken))
                     
                 case .failure(let error):
-                    // [название метода и/или сервиса]: [тип ошибки] [параметры, с которыми получили ошибку]
-                    print("Failed to fetch token: \(error)")
+                    // Логирование ошибки
+                    print("[OAuthService]: Failed to fetch token: \(error.localizedDescription)")
                     handler(.failure(error))
                 }
             }

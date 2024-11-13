@@ -63,7 +63,19 @@ extension AuthViewController: WebViewViewControllerDelegate {
                 self.delegate?.didAuthenticate(self)
                 
             case .failure(let error):
-                print("Error: token did not received: \(error.localizedDescription)")
+                print("[AuthViewController]: Error: token did not received: \(error.localizedDescription)")
+                
+                // showing alert
+                let alert = UIAlertController(title: "Something went wrong :(",
+                                              message: "Failed to log in",
+                                              preferredStyle: .alert
+                )
+                
+                let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                alert.addAction(okAction)
+                
+                self.present(alert, animated: true)
+                
             }
         }
     }

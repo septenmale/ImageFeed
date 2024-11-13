@@ -66,7 +66,7 @@ final class ProfileImageService {
         lastToken = token
         
         guard let request = userProfileImageRequest(token: token) else {
-            print("Error: Failed to request for token \(token)")
+            print("[ProfileImageService]: Error: Failed to request for token \(token)")
             completion(.failure(NetworkError.urlSessionError))
             return
         }
@@ -91,8 +91,8 @@ final class ProfileImageService {
                         )
                     
             case .failure(let error):
-                    // [название метода и/или сервиса]: [тип ошибки] [параметры, с которыми получили ошибку]
-                        print("Error fetching user profile image: \(error.localizedDescription)")
+                    // Логирование ошибки
+                        print("[ProfileImageService]: Error fetching user profile image: \(error.localizedDescription)")
                         completion(.failure(error))
                 }
             }
