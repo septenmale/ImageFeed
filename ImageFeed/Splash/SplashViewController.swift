@@ -92,4 +92,3 @@ extension SplashViewController: AuthViewControllerDelegate {
 }
 
 
-// Закончил ProfileImageService. Проблемы могут быть с устранением гонок и вызовом fetchProfileImageURL в SplashViewController

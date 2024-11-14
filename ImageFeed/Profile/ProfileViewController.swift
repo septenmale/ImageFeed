@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
@@ -71,6 +72,21 @@ final class ProfileViewController: UIViewController {
             let url = URL(string: profileImageURL)
         else { return }
         // TODO: [Sprint 11] Обновить аватар, используя Kingfisher
+        let processor = RoundCornerImageProcessor(cornerRadius: 20)
+        profileImageView.kf.setImage(with: url,
+                                     placeholder: UIImage(named: "placeholder"),
+                                     options: [.processor(processor)
+                                              ]) { result in
+            switch result{
+            case .success(let value):
+                print("Photo: \(value.image)")
+                print("Photo cache type: \(value.cacheType)")
+                print("Photo source: \(value.source)")
+                
+            case .failure(let error):
+                print("[ProfileViewController]: Error while loading profileImage \(error.localizedDescription)")
+            }
+        }
     }
     
     private func updateProfileDetails(profile: Profile) {
