@@ -47,6 +47,7 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupConstraints()
+        view.backgroundColor = .ypBlackIOS
         
         if let profile = profileService.profile {
             updateProfileDetails(profile: profile)

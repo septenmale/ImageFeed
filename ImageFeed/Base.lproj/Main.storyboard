@@ -102,22 +102,6 @@
             </objects>
             <point key="canvasLocation" x="659" y="50"/>
         </scene>
-        <!--Profile View Controller-->
-        <scene sceneID="K6R-nH-l3h">
-            <objects>
-                <viewController storyboardIdentifier="ProfileViewController" id="ygn-Ku-hJM" customClass="ProfileViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="y7X-PG-SEe">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="wl2-sE-ouH"/>
-                        <color key="backgroundColor" name="YP Black (iOS)"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="" image="tab_profile_active" id="cFJ-mh-jWY"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Pk6-mF-3DQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="659" y="832"/>
-        </scene>
         <!--Splash View Controller-->
         <scene sceneID="XwZ-OI-l3H">
             <objects>
@@ -357,7 +341,6 @@
         <image name="Vector" width="74" height="77"/>
         <image name="liked" width="42" height="42"/>
         <image name="tab_editorial_active" width="30" height="30"/>
-        <image name="tab_profile_active" width="30" height="30"/>
         <namedColor name="YP Background (iOS)">
             <color red="0.99607843137254903" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
