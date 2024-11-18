@@ -32,6 +32,7 @@
 		77D123602CBA6EB30038BD59 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D1235F2CBA6EB30038BD59 /* SingleImageViewController.swift */; };
 		77DADF952CE605F60031450C /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 77DADF942CE605F60031450C /* Kingfisher */; };
 		77DADF982CE9F7850031450C /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 77DADF972CE9F7850031450C /* SwiftKeychainWrapper */; };
+		77DADF9B2CEB3D860031450C /* TapBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DADF9A2CEB3D790031450C /* TapBarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +60,7 @@
 		778BDFB92CAC1C6B00DB3830 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		77B6A17E2CB83617002B2E86 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		77D1235F2CBA6EB30038BD59 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
+		77DADF9A2CEB3D790031450C /* TapBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +141,7 @@
 				778BDFB92CAC1C6B00DB3830 /* SceneDelegate.swift */,
 				77152EF32CDA74E300179D83 /* UIBlockingProgressHUD.swift */,
 				776522E62CC7890800F18B5C /* Constants.swift */,
+				77DADF992CEB3D570031450C /* TapBar */,
 				776523072CD364E200F18B5C /* NetworkService */,
 				776523032CD2477800F18B5C /* Splash */,
 				77B6A1802CB90C0E002B2E86 /* Profile */,
@@ -175,6 +178,14 @@
 				77D1235F2CBA6EB30038BD59 /* SingleImageViewController.swift */,
 			);
 			path = SingleImage;
+			sourceTree = "<group>";
+		};
+		77DADF992CEB3D570031450C /* TapBar */ = {
+			isa = PBXGroup;
+			children = (
+				77DADF9A2CEB3D790031450C /* TapBarController.swift */,
+			);
+			path = TapBar;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -270,6 +281,7 @@
 				776522EC2CC8F1E500F18B5C /* AuthViewController.swift in Sources */,
 				77152EF42CDA74F900179D83 /* UIBlockingProgressHUD.swift in Sources */,
 				77152EF92CDA8A4400179D83 /* ProfileResultResponseBody.swift in Sources */,
+				77DADF9B2CEB3D860031450C /* TapBarController.swift in Sources */,
 				774009FB2CE0B69E0034F7F5 /* ProfileImageService.swift in Sources */,
 				776523052CD2479400F18B5C /* SplashViewController.swift in Sources */,
 				776522E72CC7890C00F18B5C /* Constants.swift in Sources */,
