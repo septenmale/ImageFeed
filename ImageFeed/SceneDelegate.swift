@@ -11,10 +11,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: scene)
         
-        window?.rootViewController = UIStoryboard(
-            name: "Main",
-            bundle: .main
-        ).instantiateInitialViewController() // change to SplashViewController() when create VC by code
+        window?.rootViewController = SplashViewController() // change to SplashViewController() when create VC by code
         
         window?.makeKeyAndVisible()
         
