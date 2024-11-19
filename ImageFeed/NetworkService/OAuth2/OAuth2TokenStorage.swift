@@ -7,15 +7,15 @@ final class OAuth2TokenStorage {
     
     private init() {}
     
-    private let tokenKey = "OAuthToken" // a place for key
+    private let tokenKey = "OAuthToken"
     
     var token: String? {
         get {
-            return KeychainWrapper.standard.string(forKey: tokenKey) // receiving token from keychain
+            return KeychainWrapper.standard.string(forKey: tokenKey)
         }
         set {
             if let newValue = newValue {
-                let isSuccess = KeychainWrapper.standard.set(newValue, forKey: tokenKey) // saving token
+                let isSuccess = KeychainWrapper.standard.set(newValue, forKey: tokenKey)
                 guard isSuccess else {
                     print("[OAuth2TokenStorage]: Error saving token to Keychain")
                     return

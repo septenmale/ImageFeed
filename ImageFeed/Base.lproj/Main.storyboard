@@ -198,7 +198,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AuthVector" translatesAutoresizingMaskIntoConstraints="NO" id="qnu-rZ-sem">
-                                <rect key="frame" x="166.66666666666666" y="396" width="60" height="60"/>
+                                <rect key="frame" x="166.66666666666666" y="430.66666666666669" width="60" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="BU1-4L-4k6"/>
                                     <constraint firstAttribute="width" secondItem="qnu-rZ-sem" secondAttribute="height" multiplier="1:1" id="e2K-hz-2Bg"/>
@@ -232,8 +232,8 @@
                             <constraint firstItem="n5F-TB-KZR" firstAttribute="centerX" secondItem="NkD-ed-Tij" secondAttribute="centerX" id="WgU-ev-o7r"/>
                             <constraint firstItem="hiE-MP-jZ5" firstAttribute="bottom" secondItem="n5F-TB-KZR" secondAttribute="bottom" constant="90" id="XC4-eu-uXg"/>
                             <constraint firstItem="n5F-TB-KZR" firstAttribute="leading" secondItem="hiE-MP-jZ5" secondAttribute="leading" constant="16" id="ZT8-oT-QFc"/>
-                            <constraint firstItem="qnu-rZ-sem" firstAttribute="centerY" secondItem="NkD-ed-Tij" secondAttribute="centerY" id="dyf-N8-cYi"/>
-                            <constraint firstItem="qnu-rZ-sem" firstAttribute="centerX" secondItem="NkD-ed-Tij" secondAttribute="centerX" id="yN7-Eb-7n6"/>
+                            <constraint firstItem="qnu-rZ-sem" firstAttribute="centerY" secondItem="hiE-MP-jZ5" secondAttribute="centerY" id="dyf-N8-cYi"/>
+                            <constraint firstItem="qnu-rZ-sem" firstAttribute="centerX" secondItem="hiE-MP-jZ5" secondAttribute="centerX" id="yN7-Eb-7n6"/>
                             <constraint firstItem="hiE-MP-jZ5" firstAttribute="trailing" secondItem="n5F-TB-KZR" secondAttribute="trailing" constant="16" id="zd1-PI-3VN"/>
                         </constraints>
                     </view>

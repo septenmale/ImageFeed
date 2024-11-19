@@ -1,6 +1,6 @@
 import WebKit
 
-struct Profile { // вынес отдельно так как это модель данных, предназначенная для UI-слоя, а ProfileService - ceть
+struct Profile { 
     let userName: String
     let name: String
     let loginName: String
@@ -21,7 +21,7 @@ enum ProfileServiceError: Error {
 
 final class ProfileService {
     
-    static let shared = ProfileService() // имплементировал singletone
+    static let shared = ProfileService()
     
     private init() {}
     
@@ -29,30 +29,6 @@ final class ProfileService {
     
     private var lastTask: URLSessionTask?
     private var lastToken: String?
-    
-    private func userPublicProfileRequest(token: String) -> URLRequest? {
-        
-        let unsplashBaseURLString = "https://api.unsplash.com" // создаю базовый url
-        
-        guard let url = URL(string: "\(unsplashBaseURLString)/me") else {
-            print("Error: Failed to create urlComponents.Check unsplashBaseURLString")
-            return nil
-        }
-        
-        var request = URLRequest(url: url) // cоздаю реквест Написать дальше тип запрос
-        request.httpMethod = "GET"         // Написать дальше тип запрос
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization") // задаю header
-        
-        print("Profile request URL: \(url.absoluteString)")
-        print("HTTP method: \(request.httpMethod ?? "nil")")
-        guard let authHeader = request.value(forHTTPHeaderField: "Authorization") else {
-            print("Error: Failed to get Authorization header.")
-            return nil
-        }
-        print("Authorization header: \(authHeader)")
-        
-        return request
-    }
     
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         assert(Thread.isMainThread)
@@ -65,7 +41,7 @@ final class ProfileService {
         lastTask?.cancel()
         lastToken = token
         
-        guard let request = userPublicProfileRequest(token: token) else { // запрос на получение profile c данным token
+        guard let request = userPublicProfileRequest(token: token) else {
             print("[ProfileService]: Error: Failed to request for token \(token)")
             completion(.failure(NetworkError.urlSessionError))
             return
@@ -75,18 +51,16 @@ final class ProfileService {
         let task = urlSession.objectTask(for: request) { [weak self] (result: Result<ProfileResultResponseBody, Error>) in
             DispatchQueue.main.async {
                 
-                self?.lastTask = nil // вызываю тут чтобы независимо от результата completion значение обнулится
+                self?.lastTask = nil
                 self?.lastToken = nil
                 
-                switch result { // обработка результата
+                switch result {
                 case .success(let response):
-                    let profile = Profile(from: response)   // Преобразуем response в Profile и возвращаем
-                    self?.profile = profile   // добавил в 1Б
-                    completion( .success(profile))          // через замыкание
-                    
+                    let profile = Profile(from: response)
+                    self?.profile = profile
+                    completion( .success(profile))
                     
                 case .failure(let error):
-                    // Логирование ошибки
                     print("[ProfileService]: Error while fetching profile: \(error.localizedDescription)")
                     completion( .failure(error))
                 }
@@ -95,6 +69,30 @@ final class ProfileService {
         
         self.lastToken = token
         task.resume()
+    }
+    
+    private func userPublicProfileRequest(token: String) -> URLRequest? {
+        
+        let unsplashBaseURLString = "https://api.unsplash.com"
+        
+        guard let url = URL(string: "\(unsplashBaseURLString)/me") else {
+            print("Error: Failed to create urlComponents.Check unsplashBaseURLString")
+            return nil
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        print("Profile request URL: \(url.absoluteString)")
+        print("HTTP method: \(request.httpMethod ?? "nil")")
+        guard let authHeader = request.value(forHTTPHeaderField: "Authorization") else {
+            print("Error: Failed to get Authorization header.")
+            return nil
+        }
+        print("Authorization header: \(authHeader)")
+        
+        return request
     }
     
 }

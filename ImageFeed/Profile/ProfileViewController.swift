@@ -3,7 +3,6 @@ import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
-    // обьявляю проперти для хранения обсервера
     private var profileImageServiceObserver: NSObjectProtocol?
     
     private let profileService = ProfileService.shared
@@ -53,7 +52,6 @@ final class ProfileViewController: UIViewController {
             updateProfileDetails(profile: profile)
         }
         
-        // Присваиваем в profileImageServiceObserver обсервер, возвращаемый функцией addObserver
         profileImageServiceObserver = NotificationCenter.default
             .addObserver(
                 forName: ProfileImageService.didChangeNotification,
@@ -66,13 +64,12 @@ final class ProfileViewController: UIViewController {
         updateAvatar()
     }
     
-    // Метод для обновления аватарки
     private func updateAvatar() {
         guard
             let profileImageURL = ProfileImageService.shared.avatarURL,
             let url = URL(string: profileImageURL)
         else { return }
-        // TODO: [Sprint 11] Обновить аватар, используя Kingfisher
+        
         let processor = RoundCornerImageProcessor(cornerRadius: 20)
         profileImageView.kf.setImage(with: url,
                                      placeholder: UIImage(named: "placeholder"),
@@ -88,6 +85,7 @@ final class ProfileViewController: UIViewController {
                 print("[ProfileViewController]: Error while loading profileImage \(error.localizedDescription)")
             }
         }
+        
     }
     
     private func updateProfileDetails(profile: Profile) {
@@ -123,6 +121,6 @@ final class ProfileViewController: UIViewController {
             logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             logoutButton.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor),
         ])
-        
     }
+    
 }

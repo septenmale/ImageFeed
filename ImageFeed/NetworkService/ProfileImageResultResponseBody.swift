@@ -13,11 +13,9 @@ struct UserResult: Decodable {
     
     init(from decoder: Decoder) throws {
         do {
-            // Создаем контейнер верхнего уровня для всех ключей в JSON-объекте
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            // Создаем вложенный контейнер для profile_image, чтобы добраться до ключа "small"
-            let profileImageContainer = try container.nestedContainer(keyedBy: ProfileImageKeys.self, forKey: .profileImage)
-            // Извлекаем URL для ключа "small" из вложенного контейнера и присваиваем его свойству `profileImageSmallURL
+            let profileImageContainer = try container.nestedContainer(keyedBy: ProfileImageKeys.self,
+                                                                      forKey: .profileImage)
             profileImageSmallURL = try profileImageContainer.decode(URL.self, forKey: .small)
         } catch {
             print("Error while decoding UserResult: \(error.localizedDescription)")

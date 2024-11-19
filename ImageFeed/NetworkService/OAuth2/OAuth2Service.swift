@@ -16,6 +16,43 @@ final class OAuth2Service {
     
     private init() {}
     
+    func fetchOAuthToken(with code: String, handler: @escaping (Result<String, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        guard lastCode != code else {
+            handler(.failure(AuthServiceError.invalidRequest))
+            return
+        }
+        
+        lastTask?.cancel()
+        lastCode = code
+        
+        guard let request = authTokenRequest(code: code) else {
+            print("[OAuthService]: Error while creating an request for code \(code)")
+            handler(.failure(NetworkError.urlSessionError))
+            return
+        }
+        
+        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+            DispatchQueue.main.async {
+                
+                self?.lastTask = nil
+                self?.lastCode = nil
+                
+                switch result {
+                case .success(let response):
+                    print("Token response: \(response.accessToken)")
+                    handler(.success(response.accessToken))
+                    
+                case .failure(let error):
+                    print("[OAuthService]: Failed to fetch token: \(error.localizedDescription)")
+                    handler(.failure(error))
+                }
+            }
+        }
+        self.lastTask = task
+        task.resume()
+    }
+    
     private func authTokenRequest(code: String) -> URLRequest? {
         guard var urlComponents = URLComponents(string: "https://unsplash.com/oauth/token") else {
             print("Error: Failed to create urlComponents. Check base url + Path.")
@@ -41,45 +78,6 @@ final class OAuth2Service {
         print("Auth request URL: \(url.absoluteString)")
         print("HTTP Method: \(request.httpMethod ?? "nil")")
         return request
-    }
-    
-    func fetchOAuthToken(with code: String, handler: @escaping (Result<String, Error>) -> Void) {
-        assert(Thread.isMainThread) // проверяем что код вып-ся из гл-го потока
-        guard lastCode != code else {
-            handler(.failure(AuthServiceError.invalidRequest))
-            return
-        }
-        
-        lastTask?.cancel()
-        lastCode = code
-        
-        guard let request = authTokenRequest(code: code) else { // Создаём запрос на получение Auth Token c даным кодом
-            print("[OAuthService]: Error while creating an request for code \(code)")
-            handler(.failure(NetworkError.urlSessionError))
-            return
-        }
-        
-        // let session = URLSession.shared
-        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
-            DispatchQueue.main.async {
-                
-                self?.lastTask = nil
-                self?.lastCode = nil
-                
-                switch result {
-                case .success(let response):
-                    print("Token response: \(response.accessToken)")
-                    handler(.success(response.accessToken))
-                    
-                case .failure(let error):
-                    // Логирование ошибки
-                    print("[OAuthService]: Failed to fetch token: \(error.localizedDescription)")
-                    handler(.failure(error))
-                }
-            }
-        }
-        self.lastTask = task
-        task.resume()
     }
     
 }
