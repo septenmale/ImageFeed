@@ -20,7 +20,6 @@ final class ProfileImageService {
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
         
-        
         guard let token = OAuth2TokenStorage.shared.token else {
             print("Error: No token found in ProfileImageService")
             completion(.failure(NetworkError.tokenError))
@@ -60,7 +59,6 @@ final class ProfileImageService {
                         )
                     
             case .failure(let error):
-                
                         print("[ProfileImageService]: Error fetching user profile image: \(error.localizedDescription)")
                         completion(.failure(error))
                 }

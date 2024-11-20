@@ -49,10 +49,10 @@ extension AuthViewController: WebViewViewControllerDelegate {
         print("Received authorization code: \(code)")
         vc.dismiss(animated: true)
         
-        UIBlockingProgressHud.show() // ProgressHUD.animate()
+        UIBlockingProgressHud.show()
         OAuth2Service.shared.fetchOAuthToken(with: code) { result in
             
-            UIBlockingProgressHud.dismiss()      //ProgressHUD.dismiss()
+            UIBlockingProgressHud.dismiss()
             switch result {
                 
             case .success(let token):
@@ -65,13 +65,12 @@ extension AuthViewController: WebViewViewControllerDelegate {
             case .failure(let error):
                 print("[AuthViewController]: Error: token did not received: \(error.localizedDescription)")
                 
-                // showing alert
-                let alert = UIAlertController(title: "Something went wrong :(",
-                                              message: "Failed to log in",
+                let alert = UIAlertController(title: "Что-то пошло не так(",
+                                              message: "Не удалось войти в систему",
                                               preferredStyle: .alert
                 )
                 
-                let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                let okAction = UIAlertAction(title: "Ок", style: .default, handler: nil)
                 alert.addAction(okAction)
                 
                 self.present(alert, animated: true)

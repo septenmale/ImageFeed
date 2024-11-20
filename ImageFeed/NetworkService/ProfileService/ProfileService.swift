@@ -10,7 +10,7 @@ struct Profile {
         self.userName = profileResult.userName
         self.name = "\(profileResult.firstName) \(profileResult.lastName)"
         self.loginName = "@\(profileResult.userName)"
-        self.bio = profileResult.bio
+        self.bio = profileResult.bio ?? "No bio available"
     }
     
 }

@@ -36,45 +36,20 @@ final class WebViewViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-                // новое API
         estimatedProgressObservation = webView.observe(
-            \.estimatedProgress, // компонент пути
+            \.estimatedProgress, 
              options: [],
              changeHandler: { [ weak self ] _, _ in
                  guard let self = self else { return }
                  self.updateProgress()
              })
         
-        
-                // старое API
-//        webView.addObserver(
-//            self,
-//            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-//            options: .new,
-//            context: nil
-//        )
         updateProgress()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-                // старое API
-//        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), context: nil)
     }
-    
-                // старое API
-//    override func observeValue(
-//        forKeyPath keyPath: String?,
-//        of object: Any?,
-//        change: [NSKeyValueChangeKey : Any]?,
-//        context: UnsafeMutableRawPointer?
-//    ) {
-//        if keyPath == #keyPath(WKWebView.estimatedProgress) {
-//            updateProgress()
-//        } else {
-//            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-//        }
-//    }
     
     // MARK: - Private Methods
     private func updateProgress() {
