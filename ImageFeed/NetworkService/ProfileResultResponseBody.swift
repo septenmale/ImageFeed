@@ -1,7 +1,7 @@
 struct ProfileResultResponseBody: Decodable { 
     let userName: String
     let firstName: String
-    let lastName: String
+    let lastName: String?
     let bio: String?
     
     enum CodingKeys: String, CodingKey {
