@@ -72,7 +72,6 @@ final class ProfileService {
     }
     
     private func userPublicProfileRequest(token: String) -> URLRequest? {
-        
         let unsplashBaseURLString = "https://api.unsplash.com"
         
         guard let url = URL(string: "\(unsplashBaseURLString)/me") else {
