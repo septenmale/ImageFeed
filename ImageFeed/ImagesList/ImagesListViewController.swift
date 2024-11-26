@@ -1,7 +1,11 @@
 import UIKit
 
 final class ImagesListViewController: UIViewController {
+    var photos: [Photo] = []
+    private var imageListServiceObserver: NSObjectProtocol?
+    
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
+    private let imageListService = ImageListService()
     
     @IBOutlet private var tableView: UITableView!
     
@@ -19,6 +23,25 @@ final class ImagesListViewController: UIViewController {
         
         tableView.rowHeight = 200
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        
+        imageListServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ImageListService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateTableViewAnimated()
+            }
+        
+        loadFirstPage()
+        
+    }
+    
+    deinit {
+        if let observer = imageListServiceObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -37,6 +60,10 @@ final class ImagesListViewController: UIViewController {
         } else {
             super.prepare(for: segue, sender: sender)
         }
+    }
+    
+    private func loadFirstPage() {
+        imageListService.fetchPhotosNextPage { _ in }
     }
     
 }
@@ -75,6 +102,15 @@ extension ImagesListViewController: UITableViewDelegate {
         let cellHeight = image.size.height * scale + imageInsets.top + imageInsets.bottom
         return cellHeight
     }
+    // перенес сюда с отдельного расширения
+    func tableView(_ tableView: UITableView,
+                   willDisplay cell: UITableViewCell,
+                   forRowAt indexPath: IndexPath
+    ) {
+        if indexPath.row + 1 == photos.count {
+                    imageListService.fetchPhotosNextPage { _ in }
+                }
+    }
     
 }
 
@@ -97,14 +133,35 @@ extension ImagesListViewController: UITableViewDataSource {
     
 }
 
-extension ImagesListViewController {
-    //  В этом методе можно проверить условие indexPath.row + 1 == photos.count, и если оно верно — вызывать fetchPhotosNextPage().
+//extension ImagesListViewController {
+//    //  В этом методе можно проверить условие indexPath.row + 1 == photos.count, и если оно верно — вызывать fetchPhotosNextPage().
+//
+//    func tableView(_ tableView: UITableView,
+//                   willDisplay cell: UITableViewCell,
+//                   forRawAt indexPath: IndexPath
+//    ) {
+//        // TODO: Call func fetchPhotosNextPage() from ImageListService
+//    }
+//    
+//}
 
-    func tableView(_ tableView: UITableView,
-                   willDisplay cell: UITableViewCell,
-                   forRawAt indexPath: IndexPath
-    ) {
-        // TODO: Call func fetchPhotosNextPage() from ImageListService
+extension ImagesListViewController {
+    func updateTableViewAnimated() {
+        let oldCount = photos.count
+        
+        let newCount = imageListService.photos.count
+        
+        photos = imageListService.photos
+        
+        if oldCount != newCount {
+            var indexPaths: [IndexPath] = []
+            for i in oldCount..<newCount {
+                indexPaths.append(IndexPath(row: i, section: 0))
+            }
+            
+            tableView.performBatchUpdates {
+                tableView.insertRows(at: indexPaths, with: .automatic)
+            }  completion: { _ in }
+        }
     }
-    
 }
