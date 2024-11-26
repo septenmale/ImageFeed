@@ -132,27 +132,10 @@ extension ImagesListViewController: UITableViewDataSource {
         // Получаем текущую фотографию из массива photos
         let photo = photos[indexPath.row]
         
-        // Используем Kingfisher для загрузки изображения для thumbnail
+        // Формируем URL для загрузки изображения
         if let url = URL(string: photo.thumbImageURL) {
-            
-            // Показываем индикатор загрузки для конкретной ячейки
-            imageListCell.cellImage.kf.indicatorType = .activity
-            
-            // Настроим загрузку изображения с использованием Kingfisher
-            imageListCell.cellImage.kf.setImage(with: url,
-                                                placeholder: UIImage(named: "placeholder")) { result in
-                // Делаем что-то, когда изображение загружено или произошла ошибка
-                switch result {
-                case .success(let value):
-                    print("[ImageListViewController]: Image successfully downloaded from \(value.source.url?.absoluteString ?? "")")
-                    
-                    // После загрузки изображения, обновляем высоту ячейки
-                                    tableView.reloadRows(at: [indexPath], with: .automatic)
-                    
-                case .failure(let error):
-                    print("[ImageListViewController]: Error while downloading image: \(error.localizedDescription)")
-                }
-            }
+            // Настроим ячейку с помощью URL изображения
+            imageListCell.configure(with: url)
         }
         
         // Дополнительные настройки ячейки
@@ -160,17 +143,6 @@ extension ImagesListViewController: UITableViewDataSource {
         
         return imageListCell
     }
-    
-    //    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    //        let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentiifier, for: indexPath)
-    //
-    //        guard let imageListCell = cell as? ImagesListCell else {
-    //            return UITableViewCell()
-    //        }
-    //
-    //        configCell(for: imageListCell, with: indexPath)
-    //        return imageListCell
-    //    }
     
 }
 
