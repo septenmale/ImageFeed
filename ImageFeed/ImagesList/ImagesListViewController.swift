@@ -1,7 +1,8 @@
 import UIKit
+import ProgressHUD
 
 final class ImagesListViewController: UIViewController {
-    var photos: [Photo] = []
+    var photos: [Photo] = [] // Массив, который будет хранить данные для таблицы
     private var imageListServiceObserver: NSObjectProtocol?
     
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
@@ -9,7 +10,7 @@ final class ImagesListViewController: UIViewController {
     
     @IBOutlet private var tableView: UITableView!
     
-    private let photosName = Array(0..<20).map{ "\($0)" }
+//    private let photosName = Array(0..<20).map{ "\($0)" }
     
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -107,6 +108,7 @@ extension ImagesListViewController: UITableViewDelegate {
                    willDisplay cell: UITableViewCell,
                    forRowAt indexPath: IndexPath
     ) {
+        // поменять в будущем на isLastRow
         if indexPath.row + 1 == photos.count {
                     imageListService.fetchPhotosNextPage { _ in }
                 }
@@ -117,7 +119,7 @@ extension ImagesListViewController: UITableViewDelegate {
 extension ImagesListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return photosName.count
+        return photos.count // исправлено
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -127,41 +129,69 @@ extension ImagesListViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
+        // Получаем текущую фотографию из массива photos
+        let photo = photos[indexPath.row]
+        
+        // Используем Kingfisher для загрузки изображения для thumbnail
+        if let url = URL(string: photo.thumbImageURL) {
+            
+            // Показываем индикатор загрузки для конкретной ячейки
+            imageListCell.cellImage.kf.indicatorType = .activity
+            
+            // Настроим загрузку изображения с использованием Kingfisher
+            imageListCell.cellImage.kf.setImage(with: url,
+                                                placeholder: UIImage(named: "placeholder")) { result in
+                // Делаем что-то, когда изображение загружено или произошла ошибка
+                switch result {
+                case .success(let value):
+                    print("[ImageListViewController]: Image successfully downloaded from \(value.source.url?.absoluteString ?? "")")
+                    
+                    // После загрузки изображения, обновляем высоту ячейки
+                                    tableView.reloadRows(at: [indexPath], with: .automatic)
+                    
+                case .failure(let error):
+                    print("[ImageListViewController]: Error while downloading image: \(error.localizedDescription)")
+                }
+            }
+        }
+        
+        // Дополнительные настройки ячейки
         configCell(for: imageListCell, with: indexPath)
+        
         return imageListCell
     }
     
+    //    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    //        let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentiifier, for: indexPath)
+    //
+    //        guard let imageListCell = cell as? ImagesListCell else {
+    //            return UITableViewCell()
+    //        }
+    //
+    //        configCell(for: imageListCell, with: indexPath)
+    //        return imageListCell
+    //    }
+    
 }
 
-//extension ImagesListViewController {
-//    //  В этом методе можно проверить условие indexPath.row + 1 == photos.count, и если оно верно — вызывать fetchPhotosNextPage().
-//
-//    func tableView(_ tableView: UITableView,
-//                   willDisplay cell: UITableViewCell,
-//                   forRawAt indexPath: IndexPath
-//    ) {
-//        // TODO: Call func fetchPhotosNextPage() from ImageListService
-//    }
-//    
-//}
-
-extension ImagesListViewController {
-    func updateTableViewAnimated() {
-        let oldCount = photos.count
-        
-        let newCount = imageListService.photos.count
-        
-        photos = imageListService.photos
-        
-        if oldCount != newCount {
-            var indexPaths: [IndexPath] = []
-            for i in oldCount..<newCount {
-                indexPaths.append(IndexPath(row: i, section: 0))
-            }
+    extension ImagesListViewController {
+        func updateTableViewAnimated() {
+            let oldCount = photos.count
             
-            tableView.performBatchUpdates {
-                tableView.insertRows(at: indexPaths, with: .automatic)
-            }  completion: { _ in }
+            let newCount = imageListService.photos.count
+            
+            photos = imageListService.photos
+            
+            if oldCount != newCount {
+                var indexPaths: [IndexPath] = []
+                for i in oldCount..<newCount {
+                    indexPaths.append(IndexPath(row: i, section: 0))
+                }
+                
+                tableView.performBatchUpdates {
+                    tableView.insertRows(at: indexPaths, with: .automatic)
+                }  completion: { _ in }
+            }
         }
     }
-}
+
