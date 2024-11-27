@@ -23,9 +23,9 @@ final class SingleImageViewController: UIViewController {
         scrollView.maximumZoomScale = 1.25
         
             //TODO: Доделать.
-        //        if let imageURL = imageURL {
-        //                    loadImage(from: imageURL)
-        //                }
+                if let imageURL = imageURL {
+                            loadImage(from: imageURL)
+                        }
         
         guard let image else { return }
         imageView.image = image
@@ -38,7 +38,7 @@ final class SingleImageViewController: UIViewController {
     }
     
     @IBAction private func didTapShareButton()  {
-        guard let image else { return }
+        guard let image = imageView.image else { return }
         let share = UIActivityViewController(
             activityItems: [image],
             applicationActivities: nil
@@ -47,10 +47,10 @@ final class SingleImageViewController: UIViewController {
     }
     
         //TODO: Закончить функцию
-//    private func loadImage(from url: URL) {
-//            // Здесь вы можете загрузить изображение с помощью URL, например, с использованием Kingfisher
-//            imageView.kf.setImage(with: url)
-//        }
+    private func loadImage(from url: URL) {
+            // Здесь вы можете загрузить изображение с помощью URL, например, с использованием Kingfisher
+            imageView.kf.setImage(with: url)
+        }
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
         let minZoomScale = scrollView.minimumZoomScale
