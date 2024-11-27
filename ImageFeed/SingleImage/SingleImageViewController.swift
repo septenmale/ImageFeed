@@ -1,6 +1,8 @@
 import UIKit
 
 final class SingleImageViewController: UIViewController {
+    var imageURL: URL? 
+    
     var image: UIImage? {
         didSet {
             guard isViewLoaded, let image else { return }
@@ -20,6 +22,11 @@ final class SingleImageViewController: UIViewController {
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
         
+            //TODO: Доделать.
+        //        if let imageURL = imageURL {
+        //                    loadImage(from: imageURL)
+        //                }
+        
         guard let image else { return }
         imageView.image = image
         imageView.frame.size = image.size
@@ -38,6 +45,12 @@ final class SingleImageViewController: UIViewController {
         )
         present(share, animated: true, completion: nil)
     }
+    
+        //TODO: Закончить функцию
+//    private func loadImage(from url: URL) {
+//            // Здесь вы можете загрузить изображение с помощью URL, например, с использованием Kingfisher
+//            imageView.kf.setImage(with: url)
+//        }
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
         let minZoomScale = scrollView.minimumZoomScale

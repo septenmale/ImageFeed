@@ -1,5 +1,6 @@
 import UIKit
 import ProgressHUD
+import Kingfisher
 
 final class ImagesListViewController: UIViewController {
     var photos: [Photo] = [] // Массив, который будет хранить данные для таблицы
@@ -56,8 +57,12 @@ final class ImagesListViewController: UIViewController {
                 return
             }
             
-            let image = UIImage(named: photosName[indexPath.row])
-            viewController.image = image
+//            let image = UIImage(named: photosName[indexPath.row])
+            
+            let photo = photos[indexPath.row]
+            if let url = URL(string: photo.largeImageURL) {
+                viewController.imageURL = url
+            }
         } else {
             super.prepare(for: segue, sender: sender)
         }
@@ -72,12 +77,24 @@ final class ImagesListViewController: UIViewController {
 extension ImagesListViewController {
     
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        guard let image = UIImage(named: photosName[indexPath.row]) else {
-            return
-        }
+        let photo = photos[indexPath.row]
         
-        cell.cellImage.image = image
-        cell.dateLabel.text = dateFormatter.string(from: Date())
+        if let url = URL(string: photo.thumbImageURL) {
+                    // Загрузка изображения с помощью Kingfisher
+                    cell.cellImage.kf.setImage(with: url, placeholder: UIImage(named: "placeholder"))
+                }
+        
+//        guard let image = UIImage(named: photosName[indexPath.row]) else {
+//            return
+//        }
+//        cell.cellImage.image = image
+        
+//        cell.dateLabel.text = dateFormatter.string(from: Date())
+        if let createdAt = photo.createdAt {
+            cell.dateLabel.text = dateFormatter.string(from: createdAt)
+        } else {
+            cell.dateLabel.text = "No date available"
+        }
         
         let isLiked = indexPath.row % 2 == 0
         let likeImage = isLiked ? UIImage(named: "liked") : UIImage(named: "disliked")
@@ -92,15 +109,27 @@ extension ImagesListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let image = UIImage(named: photosName[indexPath.row]) else {
-            return 0
-        }
+        let photo = photos[indexPath.row]
+            // новое
+//        guard let url = URL(string: photo.thumbImageURL) else {
+//            return 0
+//        }
+        // новое
+//        let imageView = UIImageView()
+//        let image = imageView.kf.setImage(with: url, placeholder: UIImage(named: "placeholder"))
+        
+//        guard let image = UIImage(named: photosName[indexPath.row]) else {
+//            return 0
+//        }
         
         let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
         let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
-        let imageWidth = image.size.width
+//        let imageWidth = image.size.width
+        let imageWidth = photo.size.width
         let scale = imageViewWidth / imageWidth
-        let cellHeight = image.size.height * scale + imageInsets.top + imageInsets.bottom
+//        let cellHeight = image.size.height * scale + imageInsets.top + imageInsets.bottom
+        let cellHeight = photo.size.height * scale + imageInsets.top + imageInsets.bottom
+//        return cellHeight
         return cellHeight
     }
     // перенес сюда с отдельного расширения
