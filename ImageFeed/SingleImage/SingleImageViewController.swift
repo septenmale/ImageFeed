@@ -1,18 +1,7 @@
 import UIKit
 
 final class SingleImageViewController: UIViewController {
-    var imageURL: URL? 
-    
-    var image: UIImage? {
-        didSet {
-            guard isViewLoaded, let image else { return }
-            
-            imageView.image = image
-            imageView.frame.size = image.size
-            rescaleAndCenterImageInScrollView(image: image)
-            
-        }
-    }
+    var imageURL: URL?
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var scrollView: UIScrollView!
@@ -22,15 +11,7 @@ final class SingleImageViewController: UIViewController {
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
         
-            //TODO: Доделать.
-                if let imageURL = imageURL {
-                            loadImage(from: imageURL)
-                        }
-        
-        guard let image else { return }
-        imageView.image = image
-        imageView.frame.size = image.size
-        rescaleAndCenterImageInScrollView(image: image)
+        loadImageIfNeeded()
     }
     
     @IBAction private func didTapBackButton() {
@@ -46,11 +27,17 @@ final class SingleImageViewController: UIViewController {
         present(share, animated: true, completion: nil)
     }
     
-        //TODO: Закончить функцию
-    private func loadImage(from url: URL) {
-            // Здесь вы можете загрузить изображение с помощью URL, например, с использованием Kingfisher
-            imageView.kf.setImage(with: url)
+    private func loadImageIfNeeded() {
+        guard let imageURL = imageURL else {
+            print("Image URL is nil")
+            return
         }
+        loadImage(from: imageURL)
+    }
+    
+    private func loadImage(from url: URL) {
+        imageView.kf.setImage(with: url)
+    }
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
         let minZoomScale = scrollView.minimumZoomScale
