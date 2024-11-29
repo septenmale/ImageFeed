@@ -8,6 +8,16 @@ struct Photo {
     let thumbImageURL: String
     let largeImageURL: String
     let isLiked: Bool
+     
+    init(id: String, size: CGSize, createdAt: Date?, welcomeDescription: String?, thumbImageURL: String, largeImageURL: String, isLiked: Bool) {
+        self.id = id
+        self.size = size
+        self.createdAt = createdAt
+        self.welcomeDescription = welcomeDescription
+        self.thumbImageURL = thumbImageURL
+        self.largeImageURL = largeImageURL
+        self.isLiked = isLiked
+    }
     
     init(from photoResult: PhotoResultResponseBody) {
         self.id = photoResult.id
@@ -29,6 +39,77 @@ final class ImageListService {
     // на случай если уже идет загрузка
     private var lastTask: URLSessionTask?
     private var lastLoadedPage: Int?
+    //TODO: ДОДЕЛАТЬ
+    func changeLike(photoId: String, isLiked: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        let baseUrl = Constants.defaultBaseURL
+        guard let url = URL(string: "\(baseUrl)/photos/\(photoId)/like") else {
+            completion(.failure(NetworkError.invalidRequest))
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = isLiked ? "DELETE" : "POST"
+        request.setValue(Constants.accessKey, forHTTPHeaderField: "Authorization")
+        
+        print("Change like request URL: \(url.absoluteString)")
+        print("Change like HTTP method: \(request.httpMethod ?? "nil")")
+        
+        guard let authHeader = request.value(forHTTPHeaderField: "Authorization") else {
+            print("Error: Failed to get Authorization header.")
+            completion(.failure(NetworkError.invalidRequest))
+            return
+        }
+        
+        print("Authorization header: \(authHeader)")
+        
+        // Поиск индекса элемента
+        if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+            // Текущий элемент
+            let photo = self.photos[index]
+            
+            // Копия элемента с инвертированным значением isLiked
+            let newPhoto = Photo(
+                id: photo.id,
+                size: photo.size,
+                createdAt: photo.createdAt,
+                welcomeDescription: photo.welcomeDescription,
+                thumbImageURL: photo.thumbImageURL,
+                largeImageURL: photo.largeImageURL,
+                isLiked: !photo.isLiked // Инвертируем значение
+            )
+            
+            // Обновляем элемент в массиве на новую фотографию
+            DispatchQueue.main.async {
+                self.photos[index] = newPhoto
+            }
+            
+            // Выполняем сетевой запрос
+            let task = URLSession.shared.data(for: request) { result in
+                switch result {
+                case .success(_):
+                    // Успех: возвращаем успешный результат в completion
+                    completion(.success(()))
+                    
+                case .failure(let error):
+                    // Ошибка: возвращаем ошибку в completion
+                    print("Error changing like: \(error.localizedDescription)")
+                    completion(.failure(error))
+                    
+                    // Если ошибка, восстанавливаем старую фотографию
+                    DispatchQueue.main.async {
+                        self.photos[index] = photo
+                    }
+                }
+            }
+            
+            // Запускаем задачу
+            task.resume()
+        } else {
+            completion(.failure(NetworkError.invalidRequest))
+        }
+    }
+        
+    
     
     func fetchPhotosNextPage(completion: @escaping (Result<[Photo], Error>) -> Void) {
         // Проверяем, не идет ли уже запрос

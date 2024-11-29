@@ -29,7 +29,7 @@ extension ImagesListCell {
         setupLoadingIndicator()
         
         cellImage.kf.setImage(with: url,
-                              placeholder: UIImage(named: "placeholder") ?? UIImage()
+                              placeholder: UIImage(named: "Stub") ?? UIImage()
         ) { result in }
         //TODO: Check if possible try to insert tableView.reloadRows(at: [indexPath], with: .automatic)
     }
