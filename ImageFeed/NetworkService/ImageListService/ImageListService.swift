@@ -40,76 +40,78 @@ final class ImageListService {
     private var lastTask: URLSessionTask?
     private var lastLoadedPage: Int?
     //TODO: ДОДЕЛАТЬ
-    func changeLike(photoId: String, isLiked: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
-        let baseUrl = Constants.defaultBaseURL
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+//        let baseUrl = "https://api.unsplash.com"
+        
+        guard let baseUrl = Constants.defaultBaseURL else {
+            fatalError("[ImageListService]: [changeLike] - Error: Base URL is nil")
+        }
+        
         guard let url = URL(string: "\(baseUrl)/photos/\(photoId)/like") else {
+            print("[ImageListService]: [changeLike] - Error: Invalid URL")
             completion(.failure(NetworkError.invalidRequest))
             return
         }
         
         var request = URLRequest(url: url)
-        request.httpMethod = isLiked ? "DELETE" : "POST"
-        request.setValue(Constants.accessKey, forHTTPHeaderField: "Authorization")
+        request.httpMethod = isLike ? "DELETE" : "POST"
+
+        guard let token = OAuth2TokenStorage.shared.token else {
+            print("[ImageListService]: [changeLike] - Error: OAuth token is missing.")
+            completion(.failure(NetworkError.invalidRequest))
+            return
+        }
+        
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         print("Change like request URL: \(url.absoluteString)")
         print("Change like HTTP method: \(request.httpMethod ?? "nil")")
         
         guard let authHeader = request.value(forHTTPHeaderField: "Authorization") else {
-            print("Error: Failed to get Authorization header.")
+            print("[ImageListService]: [changeLike] - Error: Failed to get Authorization header.")
             completion(.failure(NetworkError.invalidRequest))
             return
         }
         
         print("Authorization header: \(authHeader)")
         
-        // Поиск индекса элемента
-        if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
-            // Текущий элемент
-            let photo = self.photos[index]
+        let task = URLSession.shared.data(for: request) { [weak self] result in
+            guard let self = self else { return }
             
-            // Копия элемента с инвертированным значением isLiked
-            let newPhoto = Photo(
-                id: photo.id,
-                size: photo.size,
-                createdAt: photo.createdAt,
-                welcomeDescription: photo.welcomeDescription,
-                thumbImageURL: photo.thumbImageURL,
-                largeImageURL: photo.largeImageURL,
-                isLiked: !photo.isLiked // Инвертируем значение
-            )
-            
-            // Обновляем элемент в массиве на новую фотографию
-            DispatchQueue.main.async {
-                self.photos[index] = newPhoto
-            }
-            
-            // Выполняем сетевой запрос
-            let task = URLSession.shared.data(for: request) { result in
-                switch result {
-                case .success(_):
-                    // Успех: возвращаем успешный результат в completion
+            switch result {
+            case .success:
+                // Если запрос прошёл успешно, обновляем массив
+                DispatchQueue.main.async {
+                    guard let index = self.photos.firstIndex(where: { $0.id == photoId }) else {
+                        print("[ImageListService]: [changeLike] - Error: Photo with ID \(photoId) not found.")
+                        return }
+                    // Текущий элемент
+                    let photo = self.photos[index]
+                    // Копия элемента с инвертированным значением isLiked
+                    let newPhoto = Photo(
+                        id: photo.id,
+                        size: photo.size,
+                        createdAt: photo.createdAt,
+                        welcomeDescription: photo.welcomeDescription,
+                        thumbImageURL: photo.thumbImageURL,
+                        largeImageURL: photo.largeImageURL,
+                        isLiked: !photo.isLiked // Инвертируем значение
+                    )
+                    self.photos[index] = newPhoto
+                    
                     completion(.success(()))
-                    
-                case .failure(let error):
-                    // Ошибка: возвращаем ошибку в completion
-                    print("Error changing like: \(error.localizedDescription)")
+                }
+                
+            case .failure(let error):
+                // В случае ошибки передаём её в completion
+                DispatchQueue.main.async {
+                    print("[ImageListService]: [changeLike]: Error - \(error.localizedDescription).")
                     completion(.failure(error))
-                    
-                    // Если ошибка, восстанавливаем старую фотографию
-                    DispatchQueue.main.async {
-                        self.photos[index] = photo
-                    }
                 }
             }
-            
-            // Запускаем задачу
-            task.resume()
-        } else {
-            completion(.failure(NetworkError.invalidRequest))
         }
+        task.resume()
     }
-        
-    
     
     func fetchPhotosNextPage(completion: @escaping (Result<[Photo], Error>) -> Void) {
         // Проверяем, не идет ли уже запрос

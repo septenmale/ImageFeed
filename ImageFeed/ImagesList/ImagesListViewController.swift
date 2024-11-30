@@ -2,7 +2,12 @@ import UIKit
 import ProgressHUD
 import Kingfisher
 
+protocol ImagesListCellDelegate: AnyObject {
+    func imageListCellDidTapLike(_ cell: ImagesListCell)
+}
+
 final class ImagesListViewController: UIViewController {
+    
     var photos: [Photo] = []
     private var imageListServiceObserver: NSObjectProtocol?
     
@@ -86,8 +91,9 @@ extension ImagesListViewController {
             cell.dateLabel.text = "No date available"
         }
         
-        let isLiked = indexPath.row % 2 == 0
-        let likeImage = isLiked ? UIImage(named: "liked") : UIImage(named: "disliked")
+//        let isLiked = indexPath.row % 2 == 0
+//        let likeImage = isLiked ? UIImage(named: "liked") : UIImage(named: "disliked")
+        let likeImage = photo.isLiked ? UIImage(named: "liked") : UIImage(named: "disliked")
         cell.likeButton.setImage(likeImage, for: .normal)
     }
 }
@@ -134,6 +140,8 @@ extension ImagesListViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
+        imageListCell.delegate = self
+        
         let photo = photos[indexPath.row]
         
         if let url = URL(string: photo.thumbImageURL) {
@@ -169,4 +177,38 @@ extension ImagesListViewController {
         }
     }
 }
-
+//TODO: Finish this method, 
+extension ImagesListViewController: ImagesListCellDelegate {
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+        
+        UIBlockingProgressHud.show()
+        print("Attempting to change like for photo \(photo.id)")
+        print("Delegate method called for photo: \(photo.id)")
+        imageListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { result in
+            switch result {
+            case .success:
+                // Синхронизируем массив картинок с сервисом
+                self.photos = self.imageListService.photos
+                // Изменим индикацию лайка картинки
+                cell.setIsLiked(self.photos[indexPath.row].isLiked)
+                UIBlockingProgressHud.dismiss()
+            case .failure(let error):
+                UIBlockingProgressHud.dismiss()
+                print("[ImagesListViewController]: [func imageListCellDidTapLike] Error: \(error.localizedDescription)")
+                let alert = UIAlertController(title: "Что-то пошло не так(",
+                                              message: "Не поставить лайк",
+                                              preferredStyle: .alert
+                )
+                
+                let okAction = UIAlertAction(title: "Ок", style: .default, handler: nil)
+                alert.addAction(okAction)
+                
+                self.present(alert, animated: true)
+                
+            }
+        }
+    }
+}
