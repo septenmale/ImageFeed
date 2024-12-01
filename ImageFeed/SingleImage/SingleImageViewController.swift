@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 final class SingleImageViewController: UIViewController {
     var imageURL: URL?
@@ -29,14 +30,72 @@ final class SingleImageViewController: UIViewController {
     
     private func loadImageIfNeeded() {
         guard let imageURL = imageURL else {
-            print("Image URL is nil")
+            print("[SingleImageViewController]: [loadImageIfNeeded]: Error - Image URL is nil")
             return
         }
         loadImage(from: imageURL)
     }
+    //оригинал
+    //    private func loadImage(from url: URL) {
+    //        UIBlockingProgressHud.show()
+    //
+    //        imageView.kf.setImage(with: url) { [weak self] result in
+    //            UIBlockingProgressHud.dismiss()
+    //
+    //            guard let self = self else { return }
+    //            switch result {
+    //            case .success(let imageResult):
+    //                self.rescaleAndCenterImageInScrollView(image: imageResult.image)
+    //            case .failure(let error):
+    //                print("[SingleImageViewController]: [loadImage]: Error - \(error.localizedDescription).")
+    //                self.showError()
+    //            }
+    //        }
+    //    }
     
     private func loadImage(from url: URL) {
-        imageView.kf.setImage(with: url)
+        UIBlockingProgressHud.show()
+        
+        // Использование DownsamplingImageProcessor для уменьшения изображения до размера экрана
+        let processor = DownsamplingImageProcessor(size: imageView.frame.size)
+            .append(another: ResizingImageProcessor(referenceSize: imageView.frame.size, mode: .aspectFit))
+        
+        imageView.kf.setImage(with: url,
+                              options: [
+                                .processor(processor),
+                                // возвращает коэффициент масштабирования для экрана устройства
+                                .scaleFactor(UIScreen.main.scale),
+                                // будет хранить оригинальную версию изображения в кэше, а не изменённую
+                                .cacheOriginalImage
+                              ]
+        ){ [weak self] result in
+            UIBlockingProgressHud.dismiss()
+            
+            guard let self else { return }
+            switch result {
+            case .success(let imageResult):
+                self.rescaleAndCenterImageInScrollView(image: imageResult.image)
+            case .failure(let error):
+                print("[SingleImageViewController]: [loadImage]: Error - \(error.localizedDescription).")
+                self.showError()
+            }
+        }
+    }
+    
+    private func showError() {
+        let alert = UIAlertController(title: "Что-то пошло не так" ,
+                                      message: "Попробовать еще раз?",
+                                      preferredStyle: .alert)
+        
+        let noAction = UIAlertAction(title: "Не надо", style: .cancel) { _ in }
+        let yesAction = UIAlertAction(title: "Повторить", style: .default) { _ in
+            self.loadImageIfNeeded()
+        }
+        
+        alert.addAction(noAction)
+        alert.addAction(yesAction)
+        
+        present(alert, animated: true)
     }
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
@@ -55,6 +114,7 @@ final class SingleImageViewController: UIViewController {
         let y = (newContentSize.height - visibleRectSize.height) / 2
         scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
     }
+    
 }
 
 extension SingleImageViewController: UIScrollViewDelegate {

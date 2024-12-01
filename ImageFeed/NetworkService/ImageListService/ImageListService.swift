@@ -8,7 +8,7 @@ struct Photo {
     let thumbImageURL: String
     let largeImageURL: String
     let isLiked: Bool
-     
+    
     init(id: String, size: CGSize, createdAt: Date?, welcomeDescription: String?, thumbImageURL: String, largeImageURL: String, isLiked: Bool) {
         self.id = id
         self.size = size
@@ -35,13 +35,11 @@ final class ImageListService {
     private(set) var photos: [Photo] = []
     // добавляю нотификацию
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
-    
     // на случай если уже идет загрузка
     private var lastTask: URLSessionTask?
     private var lastLoadedPage: Int?
-    //TODO: ДОДЕЛАТЬ
+    
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
-//        let baseUrl = "https://api.unsplash.com"
         
         guard let baseUrl = Constants.defaultBaseURL else {
             fatalError("[ImageListService]: [changeLike] - Error: Base URL is nil")
@@ -55,7 +53,7 @@ final class ImageListService {
         
         var request = URLRequest(url: url)
         request.httpMethod = isLike ? "DELETE" : "POST"
-
+        
         guard let token = OAuth2TokenStorage.shared.token else {
             print("[ImageListService]: [changeLike] - Error: OAuth token is missing.")
             completion(.failure(NetworkError.invalidRequest))
@@ -157,7 +155,6 @@ final class ImageListService {
                 }
             }
         }
-        
         // Сохраняем текущую задачу и запускаем ее
         self.lastTask = task
         task.resume()
@@ -185,5 +182,4 @@ final class ImageListService {
         
         return request
     }
-    
 }
