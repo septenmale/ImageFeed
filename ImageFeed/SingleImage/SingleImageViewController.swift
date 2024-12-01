@@ -35,23 +35,6 @@ final class SingleImageViewController: UIViewController {
         }
         loadImage(from: imageURL)
     }
-    //оригинал
-    //    private func loadImage(from url: URL) {
-    //        UIBlockingProgressHud.show()
-    //
-    //        imageView.kf.setImage(with: url) { [weak self] result in
-    //            UIBlockingProgressHud.dismiss()
-    //
-    //            guard let self = self else { return }
-    //            switch result {
-    //            case .success(let imageResult):
-    //                self.rescaleAndCenterImageInScrollView(image: imageResult.image)
-    //            case .failure(let error):
-    //                print("[SingleImageViewController]: [loadImage]: Error - \(error.localizedDescription).")
-    //                self.showError()
-    //            }
-    //        }
-    //    }
     
     private func loadImage(from url: URL) {
         UIBlockingProgressHud.show()

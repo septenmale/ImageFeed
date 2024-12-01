@@ -32,7 +32,7 @@ class SplashViewController: UIViewController {
     }
     
     // MARK: - Private Methods
-    private func navigateToAuthenticationScreen() {
+    func navigateToAuthenticationScreen() {
         let storyboard = UIStoryboard(name: "Main", bundle: .main)
         if let authViewController = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController {
             

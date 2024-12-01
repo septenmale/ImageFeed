@@ -15,7 +15,7 @@ final class ProfileViewController: UIViewController {
         return label
     }()
     
-    private let loginNameLabel: UILabel = { 
+    private let loginNameLabel: UILabel = {
         let label = UILabel()
         label.text = "@ekaterina_nov"
         label.textColor = .ypGrayIOS
@@ -40,6 +40,8 @@ final class ProfileViewController: UIViewController {
     private let logoutButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "Exit")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        
+        button.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         return button
     }()
     
@@ -62,6 +64,22 @@ final class ProfileViewController: UIViewController {
                 self.updateAvatar()
             }
         updateAvatar()
+    }
+    
+    func cleanProfileData() {
+        nameLabel.text = nil
+        loginNameLabel.text = nil
+        descriptionLabel.text = nil
+        profileImageView.image = nil
+    }
+    
+    @objc private func didTapBackButton() {
+        ProfileLogoutService.shared.logout()
+        // Перезагружаем rootViewController, чтобы очистить данные
+        if let window = UIApplication.shared.windows.first {
+            let splashViewController = SplashViewController()  // Создаем SplashViewController программно
+            window.rootViewController = splashViewController  // Устанавливаем его как новый root
+        }
     }
     
     private func updateAvatar() {
