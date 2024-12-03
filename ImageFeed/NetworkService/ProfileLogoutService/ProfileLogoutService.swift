@@ -26,15 +26,15 @@ final class ProfileLogoutService {
     
     private func cleanToken() {
         if let token = OAuth2TokenStorage.shared.token {
-                print("[OAuth2TokenStorage]: Token found: \(token)")
-                OAuth2TokenStorage.shared.token = nil
-            } else {
-                print("[OAuth2TokenStorage]: No token found to remove")
-            }
+            print("[OAuth2TokenStorage]: Token found: \(token)")
+            OAuth2TokenStorage.shared.token = nil
+        } else {
+            print("[OAuth2TokenStorage]: No token found to remove")
+        }
     }
     
     private func cleanUserInfo() {
-    let profileViewController = ProfileViewController()
+        let profileViewController = ProfileViewController()
         profileViewController.cleanProfileData()
     }
     

@@ -74,12 +74,26 @@ final class ProfileViewController: UIViewController {
     }
     
     @objc private func didTapBackButton() {
-        ProfileLogoutService.shared.logout()
-        // Перезагружаем rootViewController, чтобы очистить данные
-        if let window = UIApplication.shared.windows.first {
-            let splashViewController = SplashViewController()  // Создаем SplashViewController программно
-            window.rootViewController = splashViewController  // Устанавливаем его как новый root
+        
+        let alert = UIAlertController(title: "Пока, пока!" ,
+                                      message: "Уверены что хотите выйти?",
+                                      preferredStyle: .alert)
+        
+        let yesAction = UIAlertAction(title: "Да", style: .default) { _ in
+            ProfileLogoutService.shared.logout()
+            // Перезагружаем rootViewController, чтобы очистить данные
+            if let window = UIApplication.shared.windows.first {
+                let splashViewController = SplashViewController()  // Создаем SplashViewController программно
+                window.rootViewController = splashViewController  // Устанавливаем его как новый root
+            }
         }
+        let noAction = UIAlertAction(title: "Нет", style: .cancel) { _ in }
+        
+        alert.addAction(noAction)
+        alert.addAction(yesAction)
+        
+        present(alert, animated: true)
+        
     }
     
     private func updateAvatar() {

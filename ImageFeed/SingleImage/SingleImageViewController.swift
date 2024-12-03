@@ -44,6 +44,7 @@ final class SingleImageViewController: UIViewController {
             .append(another: ResizingImageProcessor(referenceSize: imageView.frame.size, mode: .aspectFit))
         
         imageView.kf.setImage(with: url,
+                              placeholder: UIImage(named: "Stub") ?? UIImage(),
                               options: [
                                 .processor(processor),
                                 // возвращает коэффициент масштабирования для экрана устройства

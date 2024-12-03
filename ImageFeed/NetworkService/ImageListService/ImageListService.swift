@@ -1,5 +1,5 @@
 import Foundation
-// UI Модель 
+
 struct Photo {
     let id: String
     let size: CGSize
@@ -120,7 +120,7 @@ final class ImageListService {
         let nextPage = (lastLoadedPage ?? 0) + 1
         // Генерируем запрос для указанной страницы
         guard let request = photosRequest(page: nextPage) else {
-            print("[ImageListService]: Error while creating request for page \(nextPage)")
+            print("[ImageListService]: [fetchPhotosNextPage]: Error while creating request for page \(nextPage)")
             completion(.failure(NetworkError.invalidRequest))
             return
         }
@@ -150,7 +150,7 @@ final class ImageListService {
                     
                 case .failure(let error):
                     // Выводим ошибку в лог и возвращаем ее в completion
-                    print("[ImageListService]: Error fetching photos: \(error.localizedDescription)")
+                    print("[ImageListService]: [fetchPhotosNextPage]: Error fetching photos: \(error.localizedDescription)")
                     completion(.failure(error))
                 }
             }
