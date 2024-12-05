@@ -8,6 +8,8 @@ final class ImageListService {
     private var lastTask: URLSessionTask?
     private var lastLoadedPage: Int?
     
+    private let formatter = ISO8601DateFormatter()
+    
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
         
         guard let baseUrl = Constants.defaultBaseURL else {
@@ -47,10 +49,10 @@ final class ImageListService {
         let task = URLSession.shared.data(for: request) { [weak self] result in
             guard let self else { return }
             
-            switch result {
-            case .success:
-                // Если запрос прошёл успешно, обновляем массив
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                
+                switch result {
+                case .success:
                     guard let index = self.photos.firstIndex(where: { $0.id == photoId }) else {
                         print("[ImageListService]: [changeLike] - Error: Photo with ID \(photoId) not found.")
                         return }
@@ -69,11 +71,8 @@ final class ImageListService {
                     self.photos[index] = newPhoto
                     
                     completion(.success(()))
-                }
-                
-            case .failure(let error):
-                // В случае ошибки передаём её в completion
-                DispatchQueue.main.async {
+                    
+                case .failure(let error):
                     print("[ImageListService]: [changeLike]: Error - \(error.localizedDescription).")
                     completion(.failure(error))
                 }
@@ -84,9 +83,7 @@ final class ImageListService {
     
     func fetchPhotosNextPage(completion: @escaping (Result<[Photo], Error>) -> Void) {
         // Проверяем, не идет ли уже запрос
-        if let lastTask = self.lastTask {
-            lastTask.cancel() // Отменяем текущую задачу, если она есть
-        }
+        if lastTask != nil { lastTask?.cancel() }
         // Определяем номер следующей страницы
         let nextPage = (lastLoadedPage ?? 0) + 1
         // Генерируем запрос для указанной страницы
@@ -98,24 +95,23 @@ final class ImageListService {
         
         let task = URLSession.shared.objectTask(for: request) {
             [weak self] (result: Result<[PhotoResultResponseBody], Error>) in
+            guard let self else { return }
             // потому что будет взаемодействие с UI
             DispatchQueue.main.async {
                 // Сбрасываем текущую задачу
-                self?.lastTask = nil
+                self.lastTask = nil
                 
                 switch result {
                 case.success(let response):
                     // Преобразуем массив PhotoResultResponseBody в массив Photo
                     let newPhotos = response.map { photoResult in
-                        Photo(from: photoResult)}
-                    
+                        Photo(from: photoResult, formatter: self.formatter)
+                    }
                     // Обновляем массив фотографий и последнюю загруженную страницу
-                    self?.photos.append(contentsOf: newPhotos)
-                    self?.lastLoadedPage = nextPage
-                    
+                    self.photos.append(contentsOf: newPhotos)
+                    self.lastLoadedPage = nextPage
                     // Отправляем уведомление об изменении данных
                     NotificationCenter.default.post(name: ImageListService.didChangeNotification, object: nil)
-                    
                     // Завершаем с успешным результатом
                     completion(.success(newPhotos))
                     

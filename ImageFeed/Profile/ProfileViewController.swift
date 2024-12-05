@@ -81,12 +81,10 @@ final class ProfileViewController: UIViewController {
         
         let yesAction = UIAlertAction(title: "Да", style: .default) { _ in
             ProfileLogoutService.shared.logout()
-            // Перезагружаем rootViewController, чтобы очистить данные
-            if let window = UIApplication.shared.windows.first {
-                let splashViewController = SplashViewController()  // Создаем SplashViewController программно
-                window.rootViewController = splashViewController  // Устанавливаем его как новый root
-            }
+            guard let window = UIApplication.shared.windows.first else { return }
+            window.rootViewController = SplashViewController()
         }
+        
         let noAction = UIAlertAction(title: "Нет", style: .cancel) { _ in }
         
         alert.addAction(noAction)

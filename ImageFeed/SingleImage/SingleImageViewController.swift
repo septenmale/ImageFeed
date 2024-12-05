@@ -43,15 +43,17 @@ final class SingleImageViewController: UIViewController {
         let processor = DownsamplingImageProcessor(size: imageView.frame.size)
             .append(another: ResizingImageProcessor(referenceSize: imageView.frame.size, mode: .aspectFit))
         
+        let options: KingfisherOptionsInfo = [
+            .processor(processor),
+            // возвращает коэффициент масштабирования для экрана устройства
+            .scaleFactor(UIScreen.main.scale),
+            // будет хранить оригинальную версию изображения в кэше, а не изменённую
+            .cacheOriginalImage
+            ]
+        
         imageView.kf.setImage(with: url,
                               placeholder: UIImage(named: "Stub") ?? UIImage(),
-                              options: [
-                                .processor(processor),
-                                // возвращает коэффициент масштабирования для экрана устройства
-                                .scaleFactor(UIScreen.main.scale),
-                                // будет хранить оригинальную версию изображения в кэше, а не изменённую
-                                .cacheOriginalImage
-                              ]
+                              options: options
         ){ [weak self] result in
             UIBlockingProgressHud.dismiss()
             
