@@ -1,36 +1,5 @@
 import Foundation
 
-struct Photo {
-    let id: String
-    let size: CGSize
-    let createdAt: Date?
-    let welcomeDescription: String?
-    let thumbImageURL: String
-    let largeImageURL: String
-    let isLiked: Bool
-    
-    init(id: String, size: CGSize, createdAt: Date?, welcomeDescription: String?, thumbImageURL: String, largeImageURL: String, isLiked: Bool) {
-        self.id = id
-        self.size = size
-        self.createdAt = createdAt
-        self.welcomeDescription = welcomeDescription
-        self.thumbImageURL = thumbImageURL
-        self.largeImageURL = largeImageURL
-        self.isLiked = isLiked
-    }
-    
-    init(from photoResult: PhotoResultResponseBody) {
-        self.id = photoResult.id
-        self.size = CGSize(width: photoResult.width, height: photoResult.height)
-        self.createdAt = ISO8601DateFormatter().date(from: photoResult.createdAt ?? "")
-        self.welcomeDescription = photoResult.description
-        self.thumbImageURL = photoResult.urls.thumb
-        self.largeImageURL = photoResult.urls.full
-        self.isLiked = photoResult.likedByUser
-    }
-    
-}
-
 final class ImageListService {
     private(set) var photos: [Photo] = []
     // добавляю нотификацию
@@ -42,7 +11,9 @@ final class ImageListService {
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
         
         guard let baseUrl = Constants.defaultBaseURL else {
-            fatalError("[ImageListService]: [changeLike] - Error: Base URL is nil")
+            print("[ImageListService]: [changeLike] - Error: Base URL is incorrect")
+            completion(.failure(NetworkError.invalidRequest))
+            return
         }
         
         guard let url = URL(string: "\(baseUrl)/photos/\(photoId)/like") else {
@@ -52,7 +23,7 @@ final class ImageListService {
         }
         
         var request = URLRequest(url: url)
-        request.httpMethod = isLike ? "DELETE" : "POST"
+        request.httpMethod = isLike ? "POST" : "DELETE"
         
         guard let token = OAuth2TokenStorage.shared.token else {
             print("[ImageListService]: [changeLike] - Error: OAuth token is missing.")
@@ -74,7 +45,7 @@ final class ImageListService {
         print("Authorization header: \(authHeader)")
         
         let task = URLSession.shared.data(for: request) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             
             switch result {
             case .success:

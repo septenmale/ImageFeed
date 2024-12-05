@@ -13,14 +13,12 @@ final class ImagesListCell: UITableViewCell {
     @IBAction private func likeButtonClicked() {
         delegate?.imageListCellDidTapLike(self)
     }
-    
     /// Prepares a reusable cell for reuse by the table view's delegate
     override func prepareForReuse() {
         super.prepareForReuse()
         
         cellImage.kf.cancelDownloadTask()
         cellImage.image = UIImage(named: "placeholder")
-        
     }
     
     func setIsLiked(_ isLiked: Bool) {
@@ -28,22 +26,3 @@ final class ImagesListCell: UITableViewCell {
         likeButton.setImage(likeImage, for: .normal)
     }
 }
-
-//
-//}
-// TODO: Try to move this func to the ImagesListViewController
-//extension ImagesListCell {
-//    /// prepares image for a next cell
-//    func configureImage(with url: URL, for indexPath: IndexPath, in tableView: UITableView) {
-//        setupLoadingIndicator()
-//        
-//        cellImage.kf.setImage(with: url,
-//                              placeholder: UIImage(named: "Stub") ?? UIImage()
-//        ) { result in }
-//    }
-//    
-//    private func setupLoadingIndicator() {
-//        cellImage.kf.indicatorType = .activity
-//    }
-//    
-//}

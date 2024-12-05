@@ -36,6 +36,7 @@
 		77DADF952CE605F60031450C /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 77DADF942CE605F60031450C /* Kingfisher */; };
 		77DADF982CE9F7850031450C /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 77DADF972CE9F7850031450C /* SwiftKeychainWrapper */; };
 		77DADF9B2CEB3D860031450C /* TapBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DADF9A2CEB3D790031450C /* TapBarController.swift */; };
+		77FF1B812D01938800E68D1A /* PhotoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FF1B802D01938200E68D1A /* PhotoModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +68,7 @@
 		77B6A17E2CB83617002B2E86 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		77D1235F2CBA6EB30038BD59 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 		77DADF9A2CEB3D790031450C /* TapBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapBarController.swift; sourceTree = "<group>"; };
+		77FF1B802D01938200E68D1A /* PhotoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +168,7 @@
 				778BDFB92CAC1C6B00DB3830 /* SceneDelegate.swift */,
 				77152EF32CDA74E300179D83 /* UIBlockingProgressHUD.swift */,
 				776522E62CC7890800F18B5C /* Constants.swift */,
+				77FF1B7F2D01937200E68D1A /* Models */,
 				77DADF992CEB3D570031450C /* TapBar */,
 				776523072CD364E200F18B5C /* NetworkService */,
 				776523032CD2477800F18B5C /* Splash */,
@@ -211,6 +214,14 @@
 				77DADF9A2CEB3D790031450C /* TapBarController.swift */,
 			);
 			path = TapBar;
+			sourceTree = "<group>";
+		};
+		77FF1B7F2D01937200E68D1A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				77FF1B802D01938200E68D1A /* PhotoModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -318,6 +329,7 @@
 				776522EE2CC8F49D00F18B5C /* WebViewViewController.swift in Sources */,
 				770CB4412CF1D42300B83EFF /* ImageListResponseBody.swift in Sources */,
 				778BDFBE2CAC1C6B00DB3830 /* SceneDelegate.swift in Sources */,
+				77FF1B812D01938800E68D1A /* PhotoModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

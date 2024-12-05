@@ -119,11 +119,8 @@ extension ImagesListViewController: UITableViewDataSource {
         }
         
         imageListCell.delegate = self
-        
         let photo = photos[indexPath.row]
-        
         let url = URL(string: photo.thumbImageURL)
-        
         configCell(for: imageListCell, url: url, with: indexPath)
         
         return imageListCell
@@ -173,7 +170,7 @@ extension ImagesListViewController {
         cell.cellImage.kf.indicatorType = .activity
         cell.cellImage.kf.setImage(with: url,
                                    placeholder: UIImage(named: "Stub") ?? UIImage()
-        )
+        ) { result in }
         
         let date = dateFormatter.string(from: photo.createdAt ?? Date())
         cell.dateLabel.text = date
