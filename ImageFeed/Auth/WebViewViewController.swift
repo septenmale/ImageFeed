@@ -9,7 +9,14 @@ protocol WebViewViewControllerDelegate: AnyObject {
     func webViewViewControllerDidCancel(_ vc: WebViewViewController)
 }
 
-final class WebViewViewController: UIViewController {
+public protocol WebViewViewControllerProtocol: AnyObject {
+    var presenter: WebViewPresenterProtocol? { get set }
+    func load(request: URLRequest)
+    func setProgressValue(_ newValue: Float)
+    func setProgressHidden(_ isHidden: Bool)
+}
+
+final class WebViewViewController: UIViewController, WebViewViewControllerProtocol {
     
     // MARK: - IB Outlets
     @IBOutlet private var webView: WKWebView!
@@ -17,67 +24,79 @@ final class WebViewViewController: UIViewController {
     
     // MARK: - Public Properties
     weak var delegate: WebViewViewControllerDelegate?
-    
+    var presenter: WebViewPresenterProtocol?
     // MARK: - Private Properties
     private var estimatedProgressObservation: NSKeyValueObservation?
     
-    private enum WebViewConstants {
-        static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
-    }
+    
     
     // MARK: - Overrides Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        webView.navigationDelegate = self
         
-        loadAuthView()
+        webView.navigationDelegate = self
+        presenter?.viewDidLoad()
+//        loadAuthView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         estimatedProgressObservation = webView.observe(
-            \.estimatedProgress, 
+            \.estimatedProgress,
              options: [],
              changeHandler: { [ weak self ] _, _ in
                  guard let self = self else { return }
-                 self.updateProgress()
+                 //                 self.updateProgress()
+                 presenter?.didUpdateProgressValue(webView.estimatedProgress)
              })
-        
-        updateProgress()
+        presenter?.didUpdateProgressValue(webView.estimatedProgress)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
     
+    func load(request: URLRequest) {
+        
+    }
     // MARK: - Private Methods
-    private func updateProgress() {
-        progressView.progress = Float(webView.estimatedProgress)
-        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.001
+//    private func updateProgress() {
+//        setProgressValue(<#T##newValue: Float##Float#>)
+//        setProgressHidden(<#T##isHidden: Bool##Bool#>)
+//        progressView.progress = Float(webView.estimatedProgress)
+//        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.001
+//    }
+    
+    func setProgressValue(_ newValue: Float) {
+        progressView.progress = newValue
     }
     
-    private func loadAuthView() {
-        guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString) else {
-            print("Error: Failed to create urlComponents. Check unsplashAuthoriseURLString.")
-            return
-        }
-        
-        urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: Constants.accessKey),
-            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
-            URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: Constants.accessScope)
-        ]
-        
-        guard let url = urlComponents.url else {
-            print("Error: Failed to create URL from the provided URl components")
-            return
-        }
-        
-        let request = URLRequest(url: url)
-        webView.load(request)
+    func setProgressHidden(_ isHidden: Bool) {
+        progressView.isHidden = isHidden
     }
+    
+//    private func loadAuthView() {
+//        guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString) else {
+//            print("[WebViewViewController]: [loadAuthView] - Error: Failed to create urlComponents. Check unsplashAuthoriseURLString.")
+//            return
+//        }
+//        
+//        urlComponents.queryItems = [
+//            URLQueryItem(name: "client_id", value: Constants.accessKey),
+//            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
+//            URLQueryItem(name: "response_type", value: "code"),
+//            URLQueryItem(name: "scope", value: Constants.accessScope)
+//        ]
+//        
+//        guard let url = urlComponents.url else {
+//            print("[WebViewViewController]: [loadAuthView] - Error: Failed to create URL from the provided URl components")
+//            return
+//        }
+//        
+//        let request = URLRequest(url: url)
+//        webView.load(request)
+//    }
     
 }
 

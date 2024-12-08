@@ -37,6 +37,7 @@
 		77DADF982CE9F7850031450C /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 77DADF972CE9F7850031450C /* SwiftKeychainWrapper */; };
 		77DADF9B2CEB3D860031450C /* TapBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DADF9A2CEB3D790031450C /* TapBarController.swift */; };
 		77FF1B812D01938800E68D1A /* PhotoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FF1B802D01938200E68D1A /* PhotoModel.swift */; };
+		77FF1B832D05C30800E68D1A /* WebViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FF1B822D05C2FC00E68D1A /* WebViewPresenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +70,7 @@
 		77D1235F2CBA6EB30038BD59 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 		77DADF9A2CEB3D790031450C /* TapBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapBarController.swift; sourceTree = "<group>"; };
 		77FF1B802D01938200E68D1A /* PhotoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoModel.swift; sourceTree = "<group>"; };
+		77FF1B822D05C2FC00E68D1A /* WebViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewPresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +117,7 @@
 			children = (
 				776522ED2CC8F48F00F18B5C /* WebViewViewController.swift */,
 				776522EB2CC8F1E500F18B5C /* AuthViewController.swift */,
+				77FF1B822D05C2FC00E68D1A /* WebViewPresenter.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -326,6 +329,7 @@
 				770CB43F2CF1CB5700B83EFF /* ImageListService.swift in Sources */,
 				776522FB2CCFAC2600F18B5C /* URLSession+data.swift in Sources */,
 				77D123602CBA6EB30038BD59 /* SingleImageViewController.swift in Sources */,
+				77FF1B832D05C30800E68D1A /* WebViewPresenter.swift in Sources */,
 				776522EE2CC8F49D00F18B5C /* WebViewViewController.swift in Sources */,
 				770CB4412CF1D42300B83EFF /* ImageListResponseBody.swift in Sources */,
 				778BDFBE2CAC1C6B00DB3830 /* SceneDelegate.swift in Sources */,
