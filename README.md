@@ -30,21 +30,7 @@ Custom View Implementation:
 	•	Architecture: MVC (to be refactored to MVP)
 	•	Dependencies: Swift Package Manager
 	•	Key Libraries:
-	•	*Unsplash API*
-
- 🚀 **How to Run the Project**
-	1.	Clone the Repository:
- git clone https://github.com/your-repository-link  
- cd your-repository-folder  
-
-	2.	Install Dependencies:	
-Open the project in Xcode. SPM dependencies will automatically install upon opening.
-	3.	Set Up API Keys:
-	•	Get your Unsplash API credentials from *Unsplash Developers*.
-	•	Replace the placeholder API keys in the project configuration file with your credentials.
-	4.	Build and Run:
-	•	Use a physical iPhone or iOS Simulator running iOS 13 or later.
-	•	Select your target device and hit Run in Xcode.
+	•	[*Unsplash API*](https://unsplash.com/documentation)
 
  📌 Planned Improvements
 	•	Refactor to MVP Architecture for better scalability and testability.
