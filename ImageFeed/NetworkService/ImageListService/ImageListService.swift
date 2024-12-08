@@ -131,21 +131,26 @@ final class ImageListService {
         let baseURL = "https://api.unsplash.com"
         
         guard let url = URL(string: "\(baseURL)/photos?page=\(page)") else {
-            print("[ImageListService]: Error while creating url check func photosRequest")
+            print("[ImageListService]: [photosRequest] - Error while creating url check func photosRequest")
+            return nil
+        }
+        
+        guard let token = OAuth2TokenStorage.shared.token else {
+            print("[ImageListService]: [photosRequest] - Error: OAuth token is missing.")
             return nil
         }
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.setValue("Client-ID \(Constants.accessKey)", forHTTPHeaderField: "Authorization")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
-        print("Photos request URL: \(url.absoluteString)")
-        print("HTTP method: \(request.httpMethod ?? "nil")")
+        print("[photosRequest] - URL: \(url.absoluteString)")
+        print("[photosRequest] - HTTP method: \(request.httpMethod ?? "nil")")
         guard let authHeader = request.value(forHTTPHeaderField: "Authorization") else {
             print("Error: Failed to get Authorization header.")
             return nil
         }
-        print("Authorization header: \(authHeader)")
+        print("[photosRequest] - Authorization header: \(authHeader)")
         
         return request
     }
