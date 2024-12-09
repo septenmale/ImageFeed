@@ -11,12 +11,14 @@ final class ImageListService {
     private let formatter = ISO8601DateFormatter()
     
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        // TODO: Check this guards
+//        guard let baseUrl = Constants.defaultBaseURL else {
+//            print("[ImageListService]: [changeLike] - Error: Base URL is incorrect")
+//            completion(.failure(NetworkError.invalidRequest))
+//            return
+//        }
         
-        guard let baseUrl = Constants.defaultBaseURL else {
-            print("[ImageListService]: [changeLike] - Error: Base URL is incorrect")
-            completion(.failure(NetworkError.invalidRequest))
-            return
-        }
+        let baseUrl = Constants.defaultBaseURL
         
         guard let url = URL(string: "\(baseUrl)/photos/\(photoId)/like") else {
             print("[ImageListService]: [changeLike] - Error: Invalid URL")
