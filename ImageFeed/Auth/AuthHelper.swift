@@ -13,7 +13,9 @@ final class AuthHelper: AuthHelperProtocol {
     }
     
     func authRequest() -> URLRequest? {
-        guard let url = authURL() else { return nil }
+        guard let url = authURL() else {
+            print("[AuthHelper]: [authRequest] - invalid auth URL")
+            return nil }
         
         return URLRequest(url: url)
     }
