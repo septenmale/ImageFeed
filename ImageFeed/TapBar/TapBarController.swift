@@ -16,6 +16,10 @@ final class TapBarController: UITabBarController {
             selectedImage: nil
         )
         
+        let profileViewPresenter = ProfileViewPresenter()
+        profileViewController.presenter = profileViewPresenter
+        profileViewPresenter.view = profileViewController
+        
         self.viewControllers = [imagesListViewController, profileViewController]
         
     }

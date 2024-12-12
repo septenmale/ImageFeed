@@ -1,7 +1,13 @@
 import UIKit
 import Kingfisher
 
-final class ProfileViewController: UIViewController {
+protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfileViewPresenterProtocol? { get set }
+}
+
+final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
+    
+    var presenter: ProfileViewPresenterProtocol?
     
     private var profileImageServiceObserver: NSObjectProtocol?
     
