@@ -3,13 +3,14 @@ import Kingfisher
 
 protocol ProfileViewControllerProtocol: AnyObject {
     var presenter: ProfileViewPresenterProtocol? { get set }
+    func updateProfileDetails(profile: Profile)
+    func updateAvatar()
+    func showBackButtonAlert()
 }
 
 final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
     
     var presenter: ProfileViewPresenterProtocol?
-    
-    private var profileImageServiceObserver: NSObjectProtocol?
     
     private let profileService = ProfileService.shared
     
@@ -56,19 +57,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         setupConstraints()
         view.backgroundColor = .ypBlackIOS
         
-        if let profile = profileService.profile {
-            updateProfileDetails(profile: profile)
-        }
-        
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.didChangeNotification,
-                object: nil,
-                queue: .main
-            ) { [weak self] _ in
-                guard let self = self else { return }
-                self.updateAvatar()
-            }
+        presenter?.viewDidLoad()
         updateAvatar()
     }
     
@@ -80,27 +69,10 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     }
     
     @objc private func didTapBackButton() {
-        
-        let alert = UIAlertController(title: "Пока, пока!" ,
-                                      message: "Уверены что хотите выйти?",
-                                      preferredStyle: .alert)
-        
-        let yesAction = UIAlertAction(title: "Да", style: .default) { _ in
-            ProfileLogoutService.shared.logout()
-            guard let window = UIApplication.shared.windows.first else { return }
-            window.rootViewController = SplashViewController()
-        }
-        
-        let noAction = UIAlertAction(title: "Нет", style: .cancel) { _ in }
-        
-        alert.addAction(noAction)
-        alert.addAction(yesAction)
-        
-        present(alert, animated: true)
-        
+        presenter?.didTapBackButton()
     }
-        // TODO: Move
-    private func updateAvatar() {
+        // отсавляем тут отвечает за UI
+    func updateAvatar() {
         guard
             let profileImageURL = ProfileImageService.shared.avatarURL,
             let url = URL(string: profileImageURL)
@@ -123,8 +95,27 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         }
         
     }
-    // TODO: Move
-    private func updateProfileDetails(profile: Profile) {
+    
+    func showBackButtonAlert() {
+        let alert = UIAlertController(title: "Пока, пока!" ,
+                                      message: "Уверены что хотите выйти?",
+                                      preferredStyle: .alert)
+        
+        let yesAction = UIAlertAction(title: "Да", style: .default) { _ in
+            ProfileLogoutService.shared.logout()
+            guard let window = UIApplication.shared.windows.first else { return }
+            window.rootViewController = SplashViewController()
+        }
+        
+        let noAction = UIAlertAction(title: "Нет", style: .cancel) { _ in }
+        
+        alert.addAction(noAction)
+        alert.addAction(yesAction)
+        
+        present(alert, animated: true)
+    }
+    
+    func updateProfileDetails(profile: Profile) {
         nameLabel.text = profile.name
         loginNameLabel.text = profile.loginName
         descriptionLabel.text = profile.bio
