@@ -15,7 +15,6 @@ final class WebViewTests: XCTestCase {
         _ = viewController.view
         // then
         XCTAssertTrue(presenter.viewDidLoadCalled)
-        // в общем моку мы далаем то что проверяем в тесте как я понял
     }
     
     func testPresenterCallsLoadRequest() {
@@ -95,45 +94,3 @@ final class WebViewTests: XCTestCase {
     }
     
 }
-
-final class WebViewPresenterSpy: WebViewPresenterProtocol {
-    
-    var viewDidLoadCalled: Bool = false
-    var view: WebViewViewControllerProtocol?
-    
-    func viewDidLoad() {
-        viewDidLoadCalled = true
-    }
-    
-    func didUpdateProgressValue(_ newValue: Double) {
-        
-    }
-    
-    func code(from url: URL) -> String? {
-        return nil
-    }
-    
-}
-
-final class WebViewViewControllerSpy: WebViewViewControllerProtocol {
-    var loadRequestCalled: Bool = false
-    var presenter: WebViewPresenterProtocol?
-    
-//    func loadRequest(request: URLRequest) {
-//        loadRequestCalled = true
-//    }
-    
-    func load(request: URLRequest) {
-        loadRequestCalled = true
-    }
-    
-    func setProgressValue(_ newValue: Float) {
-        
-    }
-    
-    func setProgressHidden(_ isHidden: Bool) {
-        
-    }
-    
-}
-

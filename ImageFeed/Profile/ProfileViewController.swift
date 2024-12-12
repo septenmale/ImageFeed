@@ -93,7 +93,7 @@ final class ProfileViewController: UIViewController {
         present(alert, animated: true)
         
     }
-    
+        // TODO: Move
     private func updateAvatar() {
         guard
             let profileImageURL = ProfileImageService.shared.avatarURL,
@@ -117,7 +117,7 @@ final class ProfileViewController: UIViewController {
         }
         
     }
-    
+    // TODO: Move
     private func updateProfileDetails(profile: Profile) {
         nameLabel.text = profile.name
         loginNameLabel.text = profile.loginName
