@@ -14,6 +14,11 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     
     private let profileService = ProfileService.shared
     
+    func configure(_ presenter: ProfileViewPresenterProtocol) {
+        self.presenter = presenter
+        presenter.view = self
+    }
+    
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.text = "Екатерина Новикова"
@@ -68,7 +73,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         profileImageView.image = nil
     }
     
-    @objc private func didTapBackButton() {
+    @objc func didTapBackButton() {
         presenter?.didTapBackButton()
     }
         // отсавляем тут отвечает за UI
