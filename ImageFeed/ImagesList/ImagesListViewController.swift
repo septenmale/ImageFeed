@@ -2,11 +2,17 @@ import UIKit
 import ProgressHUD
 import Kingfisher
 
+protocol ImagesListViewControllerProtocol: AnyObject {
+    var presenter: ImagesListViewPresenterProtocol? { get set }
+}
+
 protocol ImagesListCellDelegate: AnyObject {
     func imageListCellDidTapLike(_ cell: ImagesListCell)
 }
 
-final class ImagesListViewController: UIViewController {
+final class ImagesListViewController: UIViewController, ImagesListViewControllerProtocol {
+    
+    var presenter: ImagesListViewPresenterProtocol?
     
     private var photos: [Photo] = []
     private var imageListServiceObserver: NSObjectProtocol?
@@ -15,7 +21,7 @@ final class ImagesListViewController: UIViewController {
     private let imageListService = ImageListService()
     
     @IBOutlet private var tableView: UITableView!
-    
+    // pres
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -27,7 +33,7 @@ final class ImagesListViewController: UIViewController {
         super.viewDidLoad()
         
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-        
+        // pres
         imageListServiceObserver = NotificationCenter.default
             .addObserver(
                 forName: ImageListService.didChangeNotification,
@@ -67,14 +73,19 @@ final class ImagesListViewController: UIViewController {
         }
         
     }
-    
+    // pres
     private func loadFirstPage() {
         imageListService.fetchPhotosNextPage { _ in }
     }
-    
+    // pres
     private func isLastRow(indexPath: IndexPath) -> Bool {
         indexPath.row == photos.count - 1
     }
+    
+    func configure(_ presenter: ImagesListViewPresenterProtocol) {
+             self.presenter = presenter
+             presenter.view = self
+         }
     
 }
 
@@ -127,7 +138,7 @@ extension ImagesListViewController: UITableViewDataSource {
     }
     
 }
-
+// pres
 extension ImagesListViewController: ImagesListCellDelegate {
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
         

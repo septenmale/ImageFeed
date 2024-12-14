@@ -33,6 +33,7 @@
 		778BDFC12CAC1C6B00DB3830 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 778BDFB62CAC1C6B00DB3830 /* LaunchScreen.storyboard */; };
 		778BDFC22CAC1C6B00DB3830 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 778BDFB82CAC1C6B00DB3830 /* Main.storyboard */; };
 		77AE1A2F2D0B5ACE00DE7708 /* ProfileViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77AE1A2E2D0B5AC600DE7708 /* ProfileViewPresenter.swift */; };
+		77AE1A3E2D0D7C5600DE7708 /* ImagesListViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77AE1A3D2D0D7C4C00DE7708 /* ImagesListViewPresenter.swift */; };
 		77B6A17F2CB83617002B2E86 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B6A17E2CB83617002B2E86 /* ProfileViewController.swift */; };
 		77D123602CBA6EB30038BD59 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D1235F2CBA6EB30038BD59 /* SingleImageViewController.swift */; };
 		77DADF952CE605F60031450C /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 77DADF942CE605F60031450C /* Kingfisher */; };
@@ -81,6 +82,7 @@
 		778BDFB72CAC1C6B00DB3830 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		778BDFB92CAC1C6B00DB3830 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		77AE1A2E2D0B5AC600DE7708 /* ProfileViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewPresenter.swift; sourceTree = "<group>"; };
+		77AE1A3D2D0D7C4C00DE7708 /* ImagesListViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListViewPresenter.swift; sourceTree = "<group>"; };
 		77B6A17E2CB83617002B2E86 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		77D1235F2CBA6EB30038BD59 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 		77DADF9A2CEB3D790031450C /* TapBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapBarController.swift; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				778BDFB02CAC1C6B00DB3830 /* ImagesListViewController.swift */,
+				77AE1A3D2D0D7C4C00DE7708 /* ImagesListViewPresenter.swift */,
 				778BDFAF2CAC1C6B00DB3830 /* ImagesListCell.swift */,
 			);
 			path = ImagesList;
@@ -402,6 +405,7 @@
 				77DADF9B2CEB3D860031450C /* TapBarController.swift in Sources */,
 				774009FB2CE0B69E0034F7F5 /* ProfileImageService.swift in Sources */,
 				776523052CD2479400F18B5C /* SplashViewController.swift in Sources */,
+				77AE1A3E2D0D7C5600DE7708 /* ImagesListViewPresenter.swift in Sources */,
 				776522E72CC7890C00F18B5C /* AuthConfiguration.swift in Sources */,
 				774009F92CE0A5B80034F7F5 /* ProfileImageResultResponseBody.swift in Sources */,
 				770CB43F2CF1CB5700B83EFF /* ImageListService.swift in Sources */,
