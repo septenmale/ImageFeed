@@ -6,9 +6,11 @@ protocol ImagesListViewPresenterProtocol: AnyObject {
     
     func viewDidLoad()
     func loadFirstPage()
+    func isLastRow(indexPath: IndexPath) -> Bool
 }
 
 final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
+    
     weak var view: ImagesListViewControllerProtocol?
     var imageListService: ImageListService
     private var imageListServiceObserver: NSObjectProtocol?
@@ -37,4 +39,10 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
      func loadFirstPage() {
         imageListService.fetchPhotosNextPage { _ in }
     }
+    
+    func isLastRow(indexPath: IndexPath) -> Bool {
+            let photosCount = imageListService.photos.count
+            return indexPath.row == photosCount - 1
+        }
 }
+

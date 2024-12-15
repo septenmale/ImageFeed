@@ -4,6 +4,7 @@ import Kingfisher
 
 protocol ImagesListViewControllerProtocol: AnyObject {
     var presenter: ImagesListViewPresenterProtocol? { get set }
+    var photos: [Photo] { get set }
     
     func updateTableViewAnimated()
 }
@@ -16,11 +17,10 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     
     var presenter: ImagesListViewPresenterProtocol?
     
-    private var photos: [Photo] = []
+    var photos: [Photo] = []
     private var imageListServiceObserver: NSObjectProtocol?
     
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
-//    private let imageListService = ImageListService()
     
     @IBOutlet private var tableView: UITableView!
     // pres
@@ -37,19 +37,6 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         
         presenter?.viewDidLoad()
-        // pres
-//        imageListServiceObserver = NotificationCenter.default
-//            .addObserver(
-//                forName: ImageListService.didChangeNotification,
-//                object: nil,
-//                queue: .main
-//            ) { [weak self] _ in
-//                guard let self else { return }
-//                self.updateTableViewAnimated()
-//            }
-//        
-//        loadFirstPage()
-        
     }
     
     deinit {
@@ -78,13 +65,9 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
         
     }
     // pres
-//    private func loadFirstPage() {
-//        imageListService.fetchPhotosNextPage { _ in }
+//    private func isLastRow(indexPath: IndexPath) -> Bool {
+//        indexPath.row == photos.count - 1
 //    }
-    // pres
-    private func isLastRow(indexPath: IndexPath) -> Bool {
-        indexPath.row == photos.count - 1
-    }
     
     func configure(_ presenter: ImagesListViewPresenterProtocol) {
              self.presenter = presenter
@@ -114,7 +97,8 @@ extension ImagesListViewController: UITableViewDelegate {
                    willDisplay cell: UITableViewCell,
                    forRowAt indexPath: IndexPath
     ){
-        guard isLastRow(indexPath: indexPath) else { return }
+//        guard isLastRow(indexPath: indexPath) else { return }
+        guard presenter?.isLastRow(indexPath: indexPath) ?? false else { return }
         presenter?.imageListService.fetchPhotosNextPage { _ in }
     }
     
