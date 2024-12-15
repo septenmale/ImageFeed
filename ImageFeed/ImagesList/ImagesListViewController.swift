@@ -4,6 +4,8 @@ import Kingfisher
 
 protocol ImagesListViewControllerProtocol: AnyObject {
     var presenter: ImagesListViewPresenterProtocol? { get set }
+    
+    func updateTableViewAnimated()
 }
 
 protocol ImagesListCellDelegate: AnyObject {
@@ -18,7 +20,7 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     private var imageListServiceObserver: NSObjectProtocol?
     
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
-    private let imageListService = ImageListService()
+//    private let imageListService = ImageListService()
     
     @IBOutlet private var tableView: UITableView!
     // pres
@@ -33,18 +35,20 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
         super.viewDidLoad()
         
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-        // pres
-        imageListServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ImageListService.didChangeNotification,
-                object: nil,
-                queue: .main
-            ) { [weak self] _ in
-                guard let self else { return }
-                self.updateTableViewAnimated()
-            }
         
-        loadFirstPage()
+        presenter?.viewDidLoad()
+        // pres
+//        imageListServiceObserver = NotificationCenter.default
+//            .addObserver(
+//                forName: ImageListService.didChangeNotification,
+//                object: nil,
+//                queue: .main
+//            ) { [weak self] _ in
+//                guard let self else { return }
+//                self.updateTableViewAnimated()
+//            }
+//        
+//        loadFirstPage()
         
     }
     
@@ -74,9 +78,9 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
         
     }
     // pres
-    private func loadFirstPage() {
-        imageListService.fetchPhotosNextPage { _ in }
-    }
+//    private func loadFirstPage() {
+//        imageListService.fetchPhotosNextPage { _ in }
+//    }
     // pres
     private func isLastRow(indexPath: IndexPath) -> Bool {
         indexPath.row == photos.count - 1
@@ -111,7 +115,7 @@ extension ImagesListViewController: UITableViewDelegate {
                    forRowAt indexPath: IndexPath
     ){
         guard isLastRow(indexPath: indexPath) else { return }
-        imageListService.fetchPhotosNextPage { _ in }
+        presenter?.imageListService.fetchPhotosNextPage { _ in }
     }
     
 }
@@ -147,12 +151,13 @@ extension ImagesListViewController: ImagesListCellDelegate {
         
         UIBlockingProgressHud.show()
         
-        imageListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { result in
+        presenter?.imageListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { result in
             UIBlockingProgressHud.dismiss()
             switch result {
             case .success:
                 // Синхронизируем массив картинок с сервисом
-                self.photos = self.imageListService.photos
+                guard let photos = self.presenter?.imageListService.photos else { print("No photos available."); return }
+                self.photos = photos
                 // Изменим индикацию лайка картинки
                 cell.setIsLiked(self.photos[indexPath.row].isLiked)
             case .failure(let error):
@@ -191,12 +196,15 @@ extension ImagesListViewController {
         
     }
     /// - Description: Updates the table view to display newly loaded photos.
-    private func updateTableViewAnimated() {
+     func updateTableViewAnimated() {
+         
         let oldCount = photos.count
-        
-        let newCount = imageListService.photos.count
-        
-        photos = imageListService.photos
+         
+         guard let unwrappedNewCount = self.presenter?.imageListService.photos.count else { print("No photos available."); return }
+         let newCount = unwrappedNewCount
+         
+         guard let unwrappedPhotos = self.presenter?.imageListService.photos else { print("No photos available."); return }
+         self.photos = unwrappedPhotos
         
         if oldCount != newCount {
             var indexPaths: [IndexPath] = []

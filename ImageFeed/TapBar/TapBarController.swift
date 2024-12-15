@@ -9,7 +9,8 @@ final class TapBarController: UITabBarController {
             withIdentifier: "ImagesListViewController"
         ) as! ImagesListViewController
         
-        let imagesListViewPresenter = ImagesListViewPresenter()
+        let imageListService = ImageListService()
+        let imagesListViewPresenter = ImagesListViewPresenter(imageListService: imageListService)
         imagesListViewController.configure(imagesListViewPresenter)
         
         let profileViewController = ProfileViewController()
