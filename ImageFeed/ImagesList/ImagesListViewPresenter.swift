@@ -8,6 +8,7 @@ protocol ImagesListViewPresenterProtocol: AnyObject {
     func loadFirstPage()
     func isLastRow(indexPath: IndexPath) -> Bool
     func changeLike(for photo: Photo, isLiked: Bool)
+    func updateTableView()
 }
 
 final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
@@ -30,7 +31,7 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
             ) { [weak self] _ in
                 guard let self else { return }
                 // TODO: move to presenter
-                self.view?.updateTableViewAnimated()
+                self.updateTableView()
             }
         
         loadFirstPage()
@@ -67,6 +68,19 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
                 self.view?.showError(message: "Не удалось поставить лайк: \(error.localizedDescription)")
             }
         }
+    }
+    
+    func updateTableView() {
+        let oldCount = view?.photos.count ?? 0
+        let newCount = imageListService.photos.count
+        
+        guard oldCount != newCount else { return }
+        
+        view?.updatePhotos(imageListService.photos)
+        
+        let indexPaths = (oldCount..<newCount).map { IndexPath(row: $0, section: 0) }
+        
+        view?.insertRows(at: indexPaths)
     }
     
 }

@@ -6,10 +6,10 @@ protocol ImagesListViewControllerProtocol: AnyObject {
     var presenter: ImagesListViewPresenterProtocol? { get set }
     var photos: [Photo] { get set }
     
-    func updateTableViewAnimated()
     func showError(message: String)
     func updatePhotos(_ photos: [Photo])
     func updateCell(at index: Int, isLiked: Bool)
+    func insertRows(at indexPaths: [IndexPath])
 }
 
 protocol ImagesListCellDelegate: AnyObject {
@@ -147,7 +147,7 @@ extension ImagesListViewController: UITableViewDataSource {
     }
     
 }
-// pres
+
 extension ImagesListViewController: ImagesListCellDelegate {
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
         
@@ -155,31 +155,6 @@ extension ImagesListViewController: ImagesListCellDelegate {
         let photo = photos[indexPath.row]
         
         presenter?.changeLike(for: photo, isLiked: !photo.isLiked)
-//        UIBlockingProgressHud.show()
-//        
-//        presenter?.imageListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { result in
-//            UIBlockingProgressHud.dismiss()
-//            switch result {
-//            case .success:
-//                // Синхронизируем массив картинок с сервисом
-//                guard let photos = self.presenter?.imageListService.photos else { print("No photos available."); return }
-//                self.photos = photos
-//                // Изменим индикацию лайка картинки
-//                cell.setIsLiked(self.photos[indexPath.row].isLiked)
-//            case .failure(let error):
-//                print("[ImagesListViewController]: [func imageListCellDidTapLike] Error: \(error.localizedDescription)")
-//                let alert = UIAlertController(title: "Что-то пошло не так(",
-//                                              message: "Не поставить лайк",
-//                                              preferredStyle: .alert
-//                )
-//                
-//                let okAction = UIAlertAction(title: "Ок", style: .default, handler: nil)
-//                alert.addAction(okAction)
-//                
-//                self.present(alert, animated: true)
-//                
-//            }
-//        }
     }
 }
 
@@ -201,26 +176,10 @@ extension ImagesListViewController {
         cell.likeButton.setImage(likeImage, for: .normal)
         
     }
-    /// - Description: Updates the table view to display newly loaded photos.
-     func updateTableViewAnimated() {
-         
-        let oldCount = photos.count
-         
-         guard let unwrappedNewCount = self.presenter?.imageListService.photos.count else { print("No photos available."); return }
-         let newCount = unwrappedNewCount
-         
-         guard let unwrappedPhotos = self.presenter?.imageListService.photos else { print("No photos available."); return }
-         self.photos = unwrappedPhotos
-        
-        if oldCount != newCount {
-            var indexPaths: [IndexPath] = []
-            for i in oldCount..<newCount {
-                indexPaths.append(IndexPath(row: i, section: 0))
-            }
-            
-            tableView.performBatchUpdates {
-                tableView.insertRows(at: indexPaths, with: .automatic)
-            }
+    
+    func insertRows(at indexPaths: [IndexPath]) {
+        tableView.performBatchUpdates {
+            tableView.insertRows(at: indexPaths, with: .automatic)
         }
     }
     

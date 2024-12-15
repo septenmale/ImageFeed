@@ -11,12 +11,6 @@ final class ImageListService {
     private let formatter = ISO8601DateFormatter()
     
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
-        // TODO: Check this guards
-//        guard let baseUrl = Constants.defaultBaseURL else {
-//            print("[ImageListService]: [changeLike] - Error: Base URL is incorrect")
-//            completion(.failure(NetworkError.invalidRequest))
-//            return
-//        }
         
         let baseUrl = Constants.defaultBaseURL
         
@@ -137,9 +131,14 @@ final class ImageListService {
             return nil
         }
         
+        guard let token = OAuth2TokenStorage.shared.token else {
+            print("[ImageListService]: [photosRequest] - Error: OAuth token is missing.")
+            return nil
+        }
+        
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.setValue("Client-ID \(Constants.accessKey)", forHTTPHeaderField: "Authorization")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         print("Photos request URL: \(url.absoluteString)")
         print("HTTP method: \(request.httpMethod ?? "nil")")
