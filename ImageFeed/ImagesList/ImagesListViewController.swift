@@ -7,6 +7,9 @@ protocol ImagesListViewControllerProtocol: AnyObject {
     var photos: [Photo] { get set }
     
     func updateTableViewAnimated()
+    func showError(message: String)
+    func updatePhotos(_ photos: [Photo])
+    func updateCell(at index: Int, isLiked: Bool)
 }
 
 protocol ImagesListCellDelegate: AnyObject {
@@ -64,15 +67,33 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
         }
         
     }
-    // pres
-//    private func isLastRow(indexPath: IndexPath) -> Bool {
-//        indexPath.row == photos.count - 1
-//    }
     
     func configure(_ presenter: ImagesListViewPresenterProtocol) {
              self.presenter = presenter
              presenter.view = self
          }
+    
+    func updatePhotos(_ photos: [Photo]) {
+        self.photos = photos
+    }
+    
+    func updateCell(at index: Int, isLiked: Bool) {
+        guard let cell = tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? ImagesListCell else {
+            return
+        }
+        cell.setIsLiked(isLiked)
+    }
+    
+    func showError(message: String) {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так(",
+            message: message,
+            preferredStyle: .alert
+        )
+        let okAction = UIAlertAction(title: "Ок", style: .default)
+        alert.addAction(okAction)
+        present(alert, animated: true)
+    }
     
 }
 
@@ -133,31 +154,32 @@ extension ImagesListViewController: ImagesListCellDelegate {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         let photo = photos[indexPath.row]
         
-        UIBlockingProgressHud.show()
-        
-        presenter?.imageListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { result in
-            UIBlockingProgressHud.dismiss()
-            switch result {
-            case .success:
-                // Синхронизируем массив картинок с сервисом
-                guard let photos = self.presenter?.imageListService.photos else { print("No photos available."); return }
-                self.photos = photos
-                // Изменим индикацию лайка картинки
-                cell.setIsLiked(self.photos[indexPath.row].isLiked)
-            case .failure(let error):
-                print("[ImagesListViewController]: [func imageListCellDidTapLike] Error: \(error.localizedDescription)")
-                let alert = UIAlertController(title: "Что-то пошло не так(",
-                                              message: "Не поставить лайк",
-                                              preferredStyle: .alert
-                )
-                
-                let okAction = UIAlertAction(title: "Ок", style: .default, handler: nil)
-                alert.addAction(okAction)
-                
-                self.present(alert, animated: true)
-                
-            }
-        }
+        presenter?.changeLike(for: photo, isLiked: !photo.isLiked)
+//        UIBlockingProgressHud.show()
+//        
+//        presenter?.imageListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { result in
+//            UIBlockingProgressHud.dismiss()
+//            switch result {
+//            case .success:
+//                // Синхронизируем массив картинок с сервисом
+//                guard let photos = self.presenter?.imageListService.photos else { print("No photos available."); return }
+//                self.photos = photos
+//                // Изменим индикацию лайка картинки
+//                cell.setIsLiked(self.photos[indexPath.row].isLiked)
+//            case .failure(let error):
+//                print("[ImagesListViewController]: [func imageListCellDidTapLike] Error: \(error.localizedDescription)")
+//                let alert = UIAlertController(title: "Что-то пошло не так(",
+//                                              message: "Не поставить лайк",
+//                                              preferredStyle: .alert
+//                )
+//                
+//                let okAction = UIAlertAction(title: "Ок", style: .default, handler: nil)
+//                alert.addAction(okAction)
+//                
+//                self.present(alert, animated: true)
+//                
+//            }
+//        }
     }
 }
 

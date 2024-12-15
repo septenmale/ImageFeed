@@ -7,6 +7,7 @@ protocol ImagesListViewPresenterProtocol: AnyObject {
     func viewDidLoad()
     func loadFirstPage()
     func isLastRow(indexPath: IndexPath) -> Bool
+    func changeLike(for photo: Photo, isLiked: Bool)
 }
 
 final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
@@ -36,13 +37,36 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
         
     }
     
-     func loadFirstPage() {
+    func loadFirstPage() {
         imageListService.fetchPhotosNextPage { _ in }
     }
     
     func isLastRow(indexPath: IndexPath) -> Bool {
-            let photosCount = imageListService.photos.count
-            return indexPath.row == photosCount - 1
+        let photosCount = imageListService.photos.count
+        return indexPath.row == photosCount - 1
+    }
+    
+    func changeLike(for photo: Photo, isLiked: Bool) {
+        UIBlockingProgressHud.show()
+        
+        imageListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { [weak self] result in
+            UIBlockingProgressHud.dismiss()
+            
+            guard let self else { return }
+            
+            switch result {
+            case .success:
+                let updatedPhotos = imageListService.photos
+                self.view?.updatePhotos(updatedPhotos)
+                if let index = updatedPhotos.firstIndex(where: { $0.id == photo.id }) {
+                    let isLiked = updatedPhotos[index].isLiked
+                    self.view?.updateCell(at: index, isLiked: isLiked)
+                }
+                
+            case .failure(let error):
+                self.view?.showError(message: "Не удалось поставить лайк: \(error.localizedDescription)")
+            }
         }
+    }
+    
 }
-
