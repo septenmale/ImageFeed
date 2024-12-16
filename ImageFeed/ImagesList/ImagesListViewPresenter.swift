@@ -2,7 +2,7 @@ import Foundation
 
 protocol ImagesListViewPresenterProtocol: AnyObject {
     var view: ImagesListViewControllerProtocol? { get set }
-    var imageListService: ImageListService { get set }
+    var imageListService: ImageListServiceProtocol { get set }
     
     func viewDidLoad()
     func loadFirstPage()
@@ -14,10 +14,10 @@ protocol ImagesListViewPresenterProtocol: AnyObject {
 final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
     
     weak var view: ImagesListViewControllerProtocol?
-    var imageListService: ImageListService
+    var imageListService: ImageListServiceProtocol
     private var imageListServiceObserver: NSObjectProtocol?
     
-    init(imageListService: ImageListService) {
+    init(imageListService: ImageListServiceProtocol) {
         self.imageListService = imageListService
     }
     

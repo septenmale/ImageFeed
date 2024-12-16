@@ -1,6 +1,13 @@
 import Foundation
 
-final class ImageListService {
+protocol ImageListServiceProtocol {
+    var photos: [Photo] { get }
+    static var didChangeNotification: Notification.Name { get }
+    func fetchPhotosNextPage(completion: @escaping (Result<[Photo], Error>) -> Void)
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void)
+}
+
+final class ImageListService: ImageListServiceProtocol {
     private(set) var photos: [Photo] = []
     // добавляю нотификацию
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
