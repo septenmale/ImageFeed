@@ -22,14 +22,14 @@ final class ImageFeedUITests: XCTestCase {
         XCTAssertTrue(loginTextField.waitForExistence(timeout: 15))
         
         loginTextField.tap()
-        loginTextField.typeText("zavhorodnii.viktor@icloud.com")
+        loginTextField.typeText("<Your login>")
         app.tap()
         
         let passwordTextField = webView.descendants(matching: .secureTextField).element
         XCTAssertTrue(passwordTextField.waitForExistence(timeout: 15))
         
         passwordTextField.tap()
-        passwordTextField.typeText("Fuwtyg-jysjus-zafqu4")
+        passwordTextField.typeText("<Your password>")
         webView.swipeUp()
         
         webView.buttons["Login"].tap()
@@ -62,12 +62,11 @@ final class ImageFeedUITests: XCTestCase {
         sleep(5)
         
         let image = app.scrollViews.images.element(boundBy: 0)
-        // Zoom in
-        image.pinch(withScale: 3, velocity: 1) // zoom in
-        // Zoom out
+        
+        image.pinch(withScale: 3, velocity: 1)
         image.pinch(withScale: 0.5, velocity: -1)
         
-        let backButton = app.buttons["backButton"] // до сюда доходит
+        let backButton = app.buttons["backButton"]
         backButton.tap()
     }
     
