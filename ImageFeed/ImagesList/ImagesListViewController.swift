@@ -26,7 +26,7 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
     
     @IBOutlet private var tableView: UITableView!
-    // pres
+   
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -118,7 +118,6 @@ extension ImagesListViewController: UITableViewDelegate {
                    willDisplay cell: UITableViewCell,
                    forRowAt indexPath: IndexPath
     ){
-//        guard isLastRow(indexPath: indexPath) else { return }
         guard presenter?.isLastRow(indexPath: indexPath) ?? false else { return }
         presenter?.imageListService.fetchPhotosNextPage { _ in }
     }

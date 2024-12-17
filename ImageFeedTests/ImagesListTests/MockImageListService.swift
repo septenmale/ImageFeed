@@ -30,7 +30,7 @@ final class MockImageListService: ImageListServiceProtocol {
                 welcomeDescription: photo.welcomeDescription,
                 thumbImageURL: photo.thumbImageURL,
                 largeImageURL: photo.largeImageURL,
-                isLiked: !photo.isLiked // Инвертируем значение
+                isLiked: !photo.isLiked 
             )
             photos[index] = updatedPhoto
         }

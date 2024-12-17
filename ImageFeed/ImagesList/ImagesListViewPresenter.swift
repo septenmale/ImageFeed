@@ -30,7 +30,7 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
                 queue: .main
             ) { [weak self] _ in
                 guard let self else { return }
-                // TODO: move to presenter
+            
                 self.updateTableView()
             }
         

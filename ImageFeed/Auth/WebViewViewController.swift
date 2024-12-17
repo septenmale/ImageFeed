@@ -17,19 +17,14 @@ public protocol WebViewViewControllerProtocol: AnyObject {
 }
 
 final class WebViewViewController: UIViewController, WebViewViewControllerProtocol {
-    
     // MARK: - IB Outlets
     @IBOutlet private var webView: WKWebView!
     @IBOutlet private var progressView: UIProgressView!
-    
     // MARK: - Public Properties
     weak var delegate: WebViewViewControllerDelegate?
     var presenter: WebViewPresenterProtocol?
     // MARK: - Private Properties
     private var estimatedProgressObservation: NSKeyValueObservation?
-    
-    
-    
     // MARK: - Overrides Methods
     override func viewDidLoad() {
         super.viewDidLoad()

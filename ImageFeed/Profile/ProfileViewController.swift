@@ -61,9 +61,17 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         super.viewDidLoad()
         setupConstraints()
         view.backgroundColor = .ypBlackIOS
+        setUpIdentifiers()
         
         presenter?.viewDidLoad()
         updateAvatar()
+    }
+    
+ func setUpIdentifiers() {
+     logoutButton.accessibilityIdentifier = "logoutButton"
+     nameLabel.accessibilityIdentifier = "nameLabel"
+     loginNameLabel.accessibilityIdentifier = "loginNameLabel"
+     descriptionLabel.accessibilityIdentifier = "descriptionLabel"
     }
     
     func cleanProfileData() {
@@ -76,7 +84,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     @objc func didTapBackButton() {
         presenter?.didTapBackButton()
     }
-        // отсавляем тут отвечает за UI
+   
     func updateAvatar() {
         guard
             let profileImageURL = ProfileImageService.shared.avatarURL,

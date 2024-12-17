@@ -31,7 +31,7 @@ final class ImagesListViewPresenterSpy: ImagesListViewPresenterProtocol {
     func isLastRow(indexPath: IndexPath) -> Bool {
         isLastRowCalled = true
         passedIndexPath = indexPath
-        return false // Заглушка для тестов
+        return false 
     }
     
     func changeLike(for photo: Photo, isLiked: Bool) {

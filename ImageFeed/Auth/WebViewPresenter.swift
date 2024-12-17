@@ -25,7 +25,6 @@ final class WebViewPresenter: WebViewPresenterProtocol {
         didUpdateProgressValue(0)
         view?.load(request: request)
     }
-    
     /// - Description: Определяет, какое значение прогресса задать для progressView и когда его скрывать
     func didUpdateProgressValue(_ newValue: Double) {
         let newProgressValue = Float(newValue)
