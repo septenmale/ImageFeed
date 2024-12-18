@@ -52,8 +52,8 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     private let logoutButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "Exit")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        
         button.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+        button.accessibilityIdentifier = "logoutButton"
         return button
     }()
     
@@ -61,17 +61,9 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         super.viewDidLoad()
         setupConstraints()
         view.backgroundColor = .ypBlackIOS
-        setUpIdentifiers()
         
         presenter?.viewDidLoad()
         updateAvatar()
-    }
-    
- func setUpIdentifiers() {
-     logoutButton.accessibilityIdentifier = "logoutButton"
-     nameLabel.accessibilityIdentifier = "nameLabel"
-     loginNameLabel.accessibilityIdentifier = "loginNameLabel"
-     descriptionLabel.accessibilityIdentifier = "descriptionLabel"
     }
     
     func cleanProfileData() {

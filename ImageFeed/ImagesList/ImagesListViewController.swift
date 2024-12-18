@@ -69,9 +69,9 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     }
     
     func configure(_ presenter: ImagesListViewPresenterProtocol) {
-             self.presenter = presenter
-             presenter.view = self
-         }
+        self.presenter = presenter
+        presenter.view = self
+    }
     
     func updatePhotos(_ photos: [Photo]) {
         self.photos = photos

@@ -22,7 +22,6 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
     }
     
     func viewDidLoad() {
-        
         imageListServiceObserver = NotificationCenter.default
             .addObserver(
                 forName: ImageListService.didChangeNotification,
@@ -35,7 +34,6 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
             }
         
         loadFirstPage()
-        
     }
     
     func loadFirstPage() {
