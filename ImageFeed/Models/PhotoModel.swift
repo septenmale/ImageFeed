@@ -1,6 +1,6 @@
 import Foundation
 
-struct Photo {
+struct Photo: Equatable {
     let id: String
     let size: CGSize
     let createdAt: Date?

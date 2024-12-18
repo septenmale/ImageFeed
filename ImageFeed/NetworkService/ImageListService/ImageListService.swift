@@ -1,6 +1,13 @@
 import Foundation
 
-final class ImageListService {
+protocol ImageListServiceProtocol {
+    var photos: [Photo] { get }
+    static var didChangeNotification: Notification.Name { get }
+    func fetchPhotosNextPage(completion: @escaping (Result<[Photo], Error>) -> Void)
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void)
+}
+
+final class ImageListService: ImageListServiceProtocol {
     private(set) var photos: [Photo] = []
     // добавляю нотификацию
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
@@ -12,11 +19,7 @@ final class ImageListService {
     
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
         
-        guard let baseUrl = Constants.defaultBaseURL else {
-            print("[ImageListService]: [changeLike] - Error: Base URL is incorrect")
-            completion(.failure(NetworkError.invalidRequest))
-            return
-        }
+        let baseUrl = Constants.defaultBaseURL
         
         guard let url = URL(string: "\(baseUrl)/photos/\(photoId)/like") else {
             print("[ImageListService]: [changeLike] - Error: Invalid URL")
@@ -132,6 +135,11 @@ final class ImageListService {
         
         guard let url = URL(string: "\(baseURL)/photos?page=\(page)") else {
             print("[ImageListService]: [photosRequest] - Error while creating url check func photosRequest")
+            return nil
+        }
+        
+        guard let token = OAuth2TokenStorage.shared.token else {
+            print("[ImageListService]: [photosRequest] - Error: OAuth token is missing.")
             return nil
         }
         

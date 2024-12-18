@@ -6,13 +6,10 @@ protocol AuthViewControllerDelegate: AnyObject {
 }
 
 final class AuthViewController: UIViewController {
-    
     // MARK: - Public Properties
     weak var delegate: AuthViewControllerDelegate?
-    
     // MARK: - Private Properties
     private let showWebViewSegueIdentifier = "ShowWebView"
-    
     // MARK: - Overrides Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,17 +19,20 @@ final class AuthViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showWebViewSegueIdentifier {
-            guard let viewController = segue.destination as? WebViewViewController
+            guard let webViewViewController = segue.destination as? WebViewViewController
             else {
                 assertionFailure("Failed to prepare for \(showWebViewSegueIdentifier)")
                 return
             }
-            viewController.delegate = self
+            let authHelper = AuthHelper()
+            let webViewPresenter = WebViewPresenter(authHelper: authHelper)
+            webViewViewController.presenter = webViewPresenter
+            webViewPresenter.view = webViewViewController
+            webViewViewController.delegate = self
         } else {
             super.prepare(for: segue, sender: sender)
         }
     }
-    
     // MARK: - Public Methods
     private func configureBackButton() {
         navigationController?.navigationBar.backIndicatorImage = UIImage(named: "nav_back_button")?.withRenderingMode(.alwaysOriginal)

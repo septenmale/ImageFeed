@@ -47,6 +47,7 @@
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rhc-99-K4K" userLabel="Like Button">
                                                     <rect key="frame" x="333" y="4" width="44" height="44"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="cellLikeImage"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="5i7-vD-6Bt"/>
                                                         <constraint firstAttribute="width" constant="44" id="YGb-Q2-Mme"/>
@@ -147,6 +148,7 @@
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zv8-jB-Q4A">
                                 <rect key="frame" x="8" y="8" width="24" height="24"/>
+                                <accessibility key="accessibilityConfiguration" identifier="backButton"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="zv8-jB-Q4A" secondAttribute="height" multiplier="1:1" id="BpS-Ky-9pE"/>
                                 </constraints>
@@ -210,6 +212,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n5F-TB-KZR">
                                 <rect key="frame" x="16" y="680" width="361" height="48"/>
                                 <color key="backgroundColor" name="YP White (iOS)"/>
+                                <accessibility key="accessibilityConfiguration" identifier="Authenticate"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="IBv-AJ-MAW"/>
                                 </constraints>
@@ -267,7 +270,7 @@
         <!--Web View Controller-->
         <scene sceneID="scr-dm-i1W">
             <objects>
-                <viewController title="Web View Controller" id="12l-6F-Dj1" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WebViewViewController" title="Web View Controller" id="12l-6F-Dj1" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="TX9-Zx-hOz">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
