@@ -1,8 +1,7 @@
 import UIKit
 import ProgressHUD
 
-class SplashViewController: UIViewController {
-
+final class SplashViewController: UIViewController {
     // MARK: - Private Properties
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
