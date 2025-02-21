@@ -25,7 +25,7 @@ final class WebViewPresenter: WebViewPresenterProtocol {
         didUpdateProgressValue(0)
         view?.load(request: request)
     }
-    /// - Description: Определяет, какое значение прогресса задать для progressView и когда его скрывать
+    
     func didUpdateProgressValue(_ newValue: Double) {
         let newProgressValue = Float(newValue)
         view?.setProgressValue(newProgressValue)
@@ -33,11 +33,11 @@ final class WebViewPresenter: WebViewPresenterProtocol {
         let shouldHideProgress = shouldHideProgress(for: newProgressValue)
         view?.setProgressHidden(shouldHideProgress)
     }
-    /// - Description: Функция вычисления того, должен ли быть скрыт progressView.
+    
     func shouldHideProgress(for value: Float) -> Bool {
         abs(value - 1.0) <= 0.0001
     }
-    /// - Description: Анализирует URL и достаёт из него код, если он есть.
+    
     func code(from url: URL) -> String? {
         authHelper.code(from: url)
     }

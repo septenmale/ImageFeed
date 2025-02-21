@@ -9,9 +9,9 @@ protocol ImageListServiceProtocol {
 
 final class ImageListService: ImageListServiceProtocol {
     private(set) var photos: [Photo] = []
-    // добавляю нотификацию
+    
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
-    // на случай если уже идет загрузка
+    
     private var lastTask: URLSessionTask?
     private var lastLoadedPage: Int?
     
@@ -59,9 +59,9 @@ final class ImageListService: ImageListServiceProtocol {
                     guard let index = self.photos.firstIndex(where: { $0.id == photoId }) else {
                         print("[ImageListService]: [changeLike] - Error: Photo with ID \(photoId) not found.")
                         return }
-                    // Текущий элемент
+                    
                     let photo = self.photos[index]
-                    // Копия элемента с инвертированным значением isLiked
+                    
                     let newPhoto = Photo(
                         id: photo.id,
                         size: photo.size,
@@ -69,7 +69,7 @@ final class ImageListService: ImageListServiceProtocol {
                         welcomeDescription: photo.welcomeDescription,
                         thumbImageURL: photo.thumbImageURL,
                         largeImageURL: photo.largeImageURL,
-                        isLiked: !photo.isLiked // Инвертируем значение
+                        isLiked: !photo.isLiked
                     )
                     self.photos[index] = newPhoto
                     
@@ -85,11 +85,11 @@ final class ImageListService: ImageListServiceProtocol {
     }
     
     func fetchPhotosNextPage(completion: @escaping (Result<[Photo], Error>) -> Void) {
-        // Проверяем, не идет ли уже запрос
+        
         if lastTask != nil { lastTask?.cancel() }
-        // Определяем номер следующей страницы
+        
         let nextPage = (lastLoadedPage ?? 0) + 1
-        // Генерируем запрос для указанной страницы
+        
         guard let request = photosRequest(page: nextPage) else {
             print("[ImageListService]: [fetchPhotosNextPage]: Error while creating request for page \(nextPage)")
             completion(.failure(NetworkError.invalidRequest))
@@ -99,33 +99,33 @@ final class ImageListService: ImageListServiceProtocol {
         let task = URLSession.shared.objectTask(for: request) {
             [weak self] (result: Result<[PhotoResultResponseBody], Error>) in
             guard let self else { return }
-            // потому что будет взаемодействие с UI
+            
             DispatchQueue.main.async {
-                // Сбрасываем текущую задачу
+                
                 self.lastTask = nil
                 
                 switch result {
                 case.success(let response):
-                    // Преобразуем массив PhotoResultResponseBody в массив Photo
+                    
                     let newPhotos = response.map { photoResult in
                         Photo(from: photoResult, formatter: self.formatter)
                     }
-                    // Обновляем массив фотографий и последнюю загруженную страницу
+                    
                     self.photos.append(contentsOf: newPhotos)
                     self.lastLoadedPage = nextPage
-                    // Отправляем уведомление об изменении данных
+                    
                     NotificationCenter.default.post(name: ImageListService.didChangeNotification, object: nil)
-                    // Завершаем с успешным результатом
+                    
                     completion(.success(newPhotos))
                     
                 case .failure(let error):
-                    // Выводим ошибку в лог и возвращаем ее в completion
+                    
                     print("[ImageListService]: [fetchPhotosNextPage]: Error fetching photos: \(error.localizedDescription)")
                     completion(.failure(error))
                 }
             }
         }
-        // Сохраняем текущую задачу и запускаем ее
+        
         self.lastTask = task
         task.resume()
     }
@@ -135,11 +135,6 @@ final class ImageListService: ImageListServiceProtocol {
         
         guard let url = URL(string: "\(baseURL)/photos?page=\(page)") else {
             print("[ImageListService]: [photosRequest] - Error while creating url check func photosRequest")
-            return nil
-        }
-        
-        guard let token = OAuth2TokenStorage.shared.token else {
-            print("[ImageListService]: [photosRequest] - Error: OAuth token is missing.")
             return nil
         }
         

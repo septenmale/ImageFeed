@@ -21,7 +21,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     
     private let nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Екатерина Новикова"
+        label.text = "Ekaterina Novikova"
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 23, weight: .semibold)
         return label
@@ -49,7 +49,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         return imageView
     }()
     
-    private let logoutButton: UIButton = {
+    private lazy var logoutButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "Exit")?.withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
@@ -102,17 +102,17 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     }
     
     func showBackButtonAlert() {
-        let alert = UIAlertController(title: "Пока, пока!" ,
-                                      message: "Уверены что хотите выйти?",
+        let alert = UIAlertController(title: "By, By!" ,
+                                      message: "Do you want to logout?",
                                       preferredStyle: .alert)
         
-        let yesAction = UIAlertAction(title: "Да", style: .default) { _ in
+        let yesAction = UIAlertAction(title: "Yes", style: .default) { _ in
             ProfileLogoutService.shared.logout()
             guard let window = UIApplication.shared.windows.first else { return }
             window.rootViewController = SplashViewController()
         }
         
-        let noAction = UIAlertAction(title: "Нет", style: .cancel) { _ in }
+        let noAction = UIAlertAction(title: "No", style: .cancel) { _ in }
         
         alert.addAction(noAction)
         alert.addAction(yesAction)

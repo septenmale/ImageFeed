@@ -13,7 +13,7 @@ final class ImagesListCell: UITableViewCell {
     @IBAction private func likeButtonClicked() {
         delegate?.imageListCellDidTapLike(self)
     }
-    /// Prepares a reusable cell for reuse by the table view's delegate
+    
     override func prepareForReuse() {
         super.prepareForReuse()
         

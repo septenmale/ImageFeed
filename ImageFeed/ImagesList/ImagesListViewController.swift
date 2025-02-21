@@ -98,11 +98,11 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
 }
 
 extension ImagesListViewController: UITableViewDelegate {
-    /// - Description: Called when a user taps a row
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
     }
-    /// - Description: Sets the height for individual rows.
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let photo = photos[indexPath.row]
         
@@ -113,7 +113,7 @@ extension ImagesListViewController: UITableViewDelegate {
         let cellHeight = photo.size.height * scale + imageInsets.top + imageInsets.bottom
         return cellHeight
     }
-    /// - Description: This method is called just before a cell is displayed on the screen
+    
     func tableView(_ tableView: UITableView,
                    willDisplay cell: UITableViewCell,
                    forRowAt indexPath: IndexPath
@@ -125,11 +125,11 @@ extension ImagesListViewController: UITableViewDelegate {
 }
 
 extension ImagesListViewController: UITableViewDataSource {
-    /// - Description: Returns the number of rows  in a specific section
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return photos.count
     }
-    /// - Description: Configures and returns the cell for a specific row at the given index path. This is the most important method because it controls what each row looks like.
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
         
@@ -158,7 +158,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
 }
 
 extension ImagesListViewController {
-    /// - Description: A custom function commonly used in table view implementations to configure the content and appearance of a cell.
+    
     private func configCell(for cell: ImagesListCell, url: URL?, with indexPath: IndexPath) {
         let photo = photos[indexPath.row]
         

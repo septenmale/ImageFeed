@@ -63,7 +63,7 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
                 }
                 
             case .failure(let error):
-                self.view?.showError(message: "Не удалось поставить лайк: \(error.localizedDescription)")
+                self.view?.showError(message: "Failure to change like: \(error.localizedDescription)")
             }
         }
     }

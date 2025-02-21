@@ -39,15 +39,14 @@ final class SingleImageViewController: UIViewController {
     private func loadImage(from url: URL) {
         UIBlockingProgressHud.show()
         
-        // Использование DownsamplingImageProcessor для уменьшения изображения до размера экрана
         let processor = DownsamplingImageProcessor(size: imageView.frame.size)
             .append(another: ResizingImageProcessor(referenceSize: imageView.frame.size, mode: .aspectFit))
         
         let options: KingfisherOptionsInfo = [
             .processor(processor),
-            // возвращает коэффициент масштабирования для экрана устройства
+            
             .scaleFactor(UIScreen.main.scale),
-            // будет хранить оригинальную версию изображения в кэше, а не изменённую
+            
             .cacheOriginalImage
             ]
         
@@ -69,12 +68,12 @@ final class SingleImageViewController: UIViewController {
     }
     
     private func showError() {
-        let alert = UIAlertController(title: "Что-то пошло не так" ,
-                                      message: "Попробовать еще раз?",
+        let alert = UIAlertController(title: "Something went wrong" ,
+                                      message: "Try again later?",
                                       preferredStyle: .alert)
         
-        let noAction = UIAlertAction(title: "Не надо", style: .cancel) { _ in }
-        let yesAction = UIAlertAction(title: "Повторить", style: .default) { _ in
+        let noAction = UIAlertAction(title: "No", style: .cancel) { _ in }
+        let yesAction = UIAlertAction(title: "Repeat", style: .default) { _ in
             self.loadImageIfNeeded()
         }
         
