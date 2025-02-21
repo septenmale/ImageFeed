@@ -2,6 +2,8 @@
 
 **Unsplash Image Viewer** is a multi-page iOS application for exploring high-quality images from the Unsplash Editorial API. The app allows users to browse an infinite image feed, like and favorite photos, view personal profile details, and share images with others.
 
+https://github.com/user-attachments/assets/28719a22-5157-4ea0-b492-f039fa16898b
+
 ## **🎯 Project Features**
 
 ### **Core Functionality:**
